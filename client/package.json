@@ -22,6 +22,7 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
-    "semantic-ui": "^2.2.13"
+    "semantic-ui": "^2.2.13",
+    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor"    
   }
 }
