@@ -5,6 +5,7 @@
   "proxy": "http://127.0.0.1:3001/",
   "dependencies": {
     "create-react-class": "^15.6.2",
+    "firebase": "^4.5.0",
     "formsy-react": "^0.19.5",
     "formsy-semantic-ui-react": "^0.2.12",
     "lodash": "^4.17.4",
@@ -23,6 +24,6 @@
   },
   "devDependencies": {
     "semantic-ui": "^2.2.13",
-    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor"    
+    "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor"
   }
 }
