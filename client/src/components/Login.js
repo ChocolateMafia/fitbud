@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Container, Grid, Header, Image, Segment, Button, Message, Transition } from 'semantic-ui-react';
 import { Redirect, Link } from 'react-router-dom';
+import firebase from 'firebase';
+import {facebookProvider, auth} from './../firebase/config';
 
 class Login extends Component {
   constructor(props) {
@@ -11,9 +13,14 @@ class Login extends Component {
       submit: false,
       email: '',
       password: ''
-    }
+    };
 
     console.log(this.props);
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleFBLogin = this.handleFBLogin.bind(this);
+    this.handleFBLogout = this.handleFBLogout.bind(this);
   }
 
   componentDidMount() {
@@ -22,7 +29,7 @@ class Login extends Component {
     });
   }
 
-  handleSubmit = (event) => {
+  handleSubmit (event) {
     event.preventDefault();
 
     this.setState({submit: true});
@@ -30,7 +37,7 @@ class Login extends Component {
     var payload = {
       username: this.state.email,
       password: this.state.password
-    }
+    };
 
     var options = {
       headers: {
@@ -39,7 +46,7 @@ class Login extends Component {
       method: 'POST',
       credentials: 'include',
       body: JSON.stringify(payload)
-    }
+    };
 
     // console.log(this.props);
 
@@ -56,7 +63,7 @@ class Login extends Component {
             errorContent: 'Please try again',
             formError: true,
             submit: false
-          })
+          });
         }
       }).then(user => {
         if (user && user[0].email) {
@@ -66,11 +73,34 @@ class Login extends Component {
       });
   }
 
-  handleInputChange = (event) => {
+  handleInputChange (event) {
     console.log(`${event.target.name} is changing to ${event.target.value}`);
     this.setState({
       [event.target.name]: event.target.value
-    })
+    });
+  }
+
+  // firebase facebook sign in authenticate method -> not used, using passport auth instead
+  handleFBLogin () {
+    auth().signInWithPopup(facebookProvider)
+      .then(result => {
+        const token = result.credential.accessToken;
+        const user = result.user;
+        console.log('FB user logged in', result); 
+      })
+      .catch(function(error) {
+        console.error(error.message);
+      });
+  }
+
+  handleFBLogout() {
+    auth().signOut()
+      .then(result => {
+        console.log('FB user logged out', result);
+      })
+      .catch(function(error) {
+        console.error(error.message);
+      });
   }
 
   render() {
@@ -113,12 +143,12 @@ class Login extends Component {
                     name='password'
                     onChange={this.handleInputChange}
                   />
-
-                  <Button loading={this.state.submit} color='teal' fluid size='large'>Log In</Button>
+                  <Button loading={this.state.submit} color='teal' fluid size='large'>Log In</Button>                              
                 </Segment>
-                <Message error 
-                         header={this.state.errorHeader}
-                         content={this.state.errorContent}
+                <Message 
+                  error 
+                  header={this.state.errorHeader}
+                  content={this.state.errorContent}
                 />
               </Form>
               <Message>
@@ -128,7 +158,7 @@ class Login extends Component {
           </Grid>
         </div>
       </Transition>
-    )
+    );
   }
 }
 
