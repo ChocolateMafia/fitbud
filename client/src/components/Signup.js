@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Input } from 'formsy-semantic-ui-react';
-import { Container, Grid, Header, Image, Segment, Button, Transition, Label, Message } from 'semantic-ui-react';
+import { Container, Grid, Header, Image, Segment, Button, Transition, Label, Message, Icon } from 'semantic-ui-react';
 import { Redirect, Link } from 'react-router-dom';
 
 const styles = {
@@ -26,6 +26,8 @@ class Signup extends Component {
     }
 
     console.log(this.props);
+
+    this.handleFBSignup = this.handleFBSignup.bind(this);
   }
 
   componentDidMount() {
@@ -60,6 +62,10 @@ class Signup extends Component {
         }
       })
   };
+
+  handleFBSignup () {
+    // TODO: AJAX Request to Facebook Login
+  }
 
   render() {
     const errorLabel = <Label color="red" pointing/>;
@@ -151,7 +157,8 @@ class Signup extends Component {
             body > div > div,
             body > div > div > div.login-form {
               height: 90%;
-            }
+            };
+
           `}</style>
           <Grid
             textAlign='center'
@@ -173,11 +180,12 @@ class Signup extends Component {
                   { passwordInput }
                   { passwordConfirmInput }
                 </Form.Group>
-                <Button loading={this.state.submit} color='teal' size='large' fluid>CREATE AN ACCOUNT</Button>                                                                                                                                                          
+                <Button loading={this.state.submit} color='teal' size='large' fluid>CREATE AN ACCOUNT</Button>
                 <Message error 
                          header={this.state.errorHeader}
                          content={this.state.errorContent}
                 />
+                <br/><Button onClick={this.handleFBSignup} color='facebook' size='large' fluid><Icon name='facebook' />Sign Up With Facebook</Button>                                                                                                                                                        
               </Form>
             </Grid.Column>
           </Grid>

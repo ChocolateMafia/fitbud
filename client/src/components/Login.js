@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Container, Grid, Header, Image, Segment, Button, Message, Transition } from 'semantic-ui-react';
+import { Form, Container, Grid, Header, Image, Segment, Button, Message, Transition, Icon } from 'semantic-ui-react';
 import { Redirect, Link } from 'react-router-dom';
 import firebase from 'firebase';
 import {facebookProvider, auth} from './../firebase/config';
@@ -20,7 +20,6 @@ class Login extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleFBLogin = this.handleFBLogin.bind(this);
-    this.handleFBLogout = this.handleFBLogout.bind(this);
   }
 
   componentDidMount() {
@@ -81,26 +80,30 @@ class Login extends Component {
   }
 
   // firebase facebook sign in authenticate method -> not used, using passport auth instead
-  handleFBLogin () {
-    auth().signInWithPopup(facebookProvider)
-      .then(result => {
-        const token = result.credential.accessToken;
-        const user = result.user;
-        console.log('FB user logged in', result); 
-      })
-      .catch(function(error) {
-        console.error(error.message);
-      });
-  }
+  // handleFBLogin () {
+  //   auth().signInWithPopup(facebookProvider)
+  //     .then(result => {
+  //       const token = result.credential.accessToken;
+  //       const user = result.user;
+  //       console.log('FB user logged in', result); 
+  //     })
+  //     .catch(function(error) {
+  //       console.error(error.message);
+  //     });
+  // }
 
-  handleFBLogout() {
-    auth().signOut()
-      .then(result => {
-        console.log('FB user logged out', result);
-      })
-      .catch(function(error) {
-        console.error(error.message);
-      });
+  // handleFBLogout() {
+  //   auth().signOut()
+  //     .then(result => {
+  //       console.log('FB user logged out', result);
+  //     })
+  //     .catch(function(error) {
+  //       console.error(error.message);
+  //     });
+  // }
+
+  handleFBLogin () {
+    // TODO: AJAX request for facebook login auth
   }
 
   render() {
@@ -150,6 +153,7 @@ class Login extends Component {
                   header={this.state.errorHeader}
                   content={this.state.errorContent}
                 />
+                <Button onClick={this.handleFBLogin} color='facebook' size='large' fluid><Icon name='facebook' />Log In With Facebook</Button>
               </Form>
               <Message>
                 New to us? <Link to='/signup'>Sign Up</Link>
