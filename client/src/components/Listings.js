@@ -60,7 +60,7 @@ class Listings extends Component {
           <Card.Group itemsPerRow={3}>
             {listings.map(listing => (
 
-              <ListingCard listing={listing} showListingModal={this.showListingModal.bind(this)}
+              <ListingCard key={listing.id} listing={listing} showListingModal={this.showListingModal.bind(this)}
                            user={'/' + this.images[Math.floor(Math.random() * this.images.length)]} 
               />
 
