@@ -16,7 +16,8 @@ CREATE TABLE users (
   name varchar(255) NOT NULL,
   email varchar(255) NOT NULL,
   password varchar(255) NOT NULL,
-  
+  fb_id varchar(255),
+  fb_token varchar(255),
   PRIMARY KEY (id)
 );
 
