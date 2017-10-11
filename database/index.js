@@ -204,6 +204,18 @@ var createRequest = function(requestObj, callback) {
   });
 };
 
+var createEvent = function(requestObj, callback) {
+	var query = 'INSERT INTO events SET ?';
+	connection.query(query, requestObj, (err, result) => {
+		if (err) {
+			console.log('error creating event', err);
+		} else {
+			console.log('created event:', result);
+			callback(result);
+		}
+	});
+};
+
 var createPair = function(requestObj, callback) {
   var query = 'INSERT INTO requests SET ?';
   connection.query(query, requestObj, (err, result) => {
@@ -255,6 +267,7 @@ module.exports = {
   getUserPostings,
   getUserRequestPostings,
   createRequest,
+  createEvent,
   createPair,
   getUserAcceptPostings,
   getRequestsByPostingId,

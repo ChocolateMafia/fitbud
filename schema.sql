@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS postings;
 DROP TABLE IF EXISTS profile;
 DROP TABLE IF EXISTS requests;
 DROP TABLE IF EXISTS chat;
+DROP TABLE IF EXISTS events;
 
 CREATE TABLE users (
   id int NOT NULL AUTO_INCREMENT,
@@ -40,6 +41,18 @@ CREATE TABLE profile (
   gender varchar(20), 
   activity varchar(255) NOT NULL,
   userId INT,  
+  PRIMARY KEY (id),
+  FOREIGN KEY (userId) REFERENCES users(id)
+);
+
+CREATE TABLE events (
+  id INT NOT NULL AUTO_INCREMENT,
+  created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  userId INT,
+  objectId INT,
+  description varchar(255) NOT NULL,
+  type varchar(20),
+  new BOOLEAN DEFAULT false,
   PRIMARY KEY (id),
   FOREIGN KEY (userId) REFERENCES users(id)
 );
