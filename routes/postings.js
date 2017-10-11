@@ -51,35 +51,40 @@ router.get('/requests/:id', (req, res) => {
 
 router.post('/:id', (req, res) => {
   //console.log('workout req body', req);
-  var id = req.user.id;
+  var userId = req.user.id;
+  var postingId = req.params.id;
   var reqObj = {
-    postingId: req.params.id,
-    userId: id,
+    postingId: postingId,
+    userId: userId,
     status: 'pending'
-  }
-  var reqObjEvent = {
-    userId: id,
-    type: 'request',
-    description: `User ${req.user.name} requested to join your workout` 
   }
 
   db.createRequest(reqObj, (result) => {
+    console.log('createRequest result:', result);
+    var reqObjEvent = {
+      author: userId,
+      objectId: result.insertId,
+      type: 'request'
+    }
     db.createEvent(reqObjEvent, (result) => {
       res.status(200).send('request created');
     })
-    //console.log('request created in the table', result);
   });
 });
 
 router.patch('/accept/:id', (req, res) => {
-  var id = req.params.id;
-  var reqObjEvent = {
-    userId: id,
-    type: 'request',
-    description: `User accepted your request` 
+  var userId = req.params.id;
+  var postingId = req.body.postingId;
+  var reqObj = {
+    postingId: postingId,
+    userId: userId
   }
-  db.updateRequest(id, (result) => {
-    //console.log('request created in the table', result);
+  db.updateRequest(reqObj, (result) => {
+    var reqObjEvent = {
+      author: userId,
+      objectId: result.insertId,
+      type: 'request'
+    }
     db.createEvent(reqObjEvent, (result) => {
       res.status(200).send('request accepted');
     })
