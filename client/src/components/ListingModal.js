@@ -8,7 +8,8 @@ class ListingModal extends Component {
     this.state = {
       requestSent: false,
       messages: [],
-      text: ''
+      text: '',
+      chatOpen: false
     }
   }
 
@@ -63,12 +64,15 @@ class ListingModal extends Component {
     }).then(response => response.json())
       .then(messages => {
         console.log('messages', messages);
-        this.setState({messages: messages})
+        this.setState({
+          chatOpen: true,
+          messages: messages
+        })
       })
   }
   render() {
     var { listing, open, hideListingModal, userImage, user, messages} = this.props;
-    //console.log('listing modal user', listing, user);
+    //console.log('listing modal user', user);
 
     return (
       <Modal open={open} onClose={hideListingModal} closeIcon dimmer='blurring'>
@@ -91,24 +95,32 @@ class ListingModal extends Component {
             <p>Details: <span>{listing.details}</span></p>
           </Modal.Description>
         </Modal.Content>
-        <Divider horizontal>Chat</Divider>
-        <Modal.Content scrolling>
-          <Comment.Group>
-            {this.state.messages.map((message, index) => 
-              <Chat 
-              key={index}
-              message={message}
-              listing={listing}
-              userImage={userImage}
-              user={user}
-              />
-            )}
-            <Form reply>
-              <Form.TextArea onChange={this.handleTextBox}/>
-              <Button content='Add Reply' labelPosition='left' icon='edit' primary onClick={this.handleReply}/>
-            </Form>
-          </Comment.Group>
-        </Modal.Content>
+        {
+          this.state.chatOpen ? 
+
+          (
+            <Modal.Content scrolling>
+              <Divider horizontal>Chat</Divider>
+              <Comment.Group>
+                {this.state.messages.map((message, index) => 
+                  <Chat 
+                  key={index}
+                  message={message}
+                  listing={listing}
+                  userImage={userImage}
+                  user={user}
+                  />
+                )}
+                <Form reply>
+                  <Form.TextArea onChange={this.handleTextBox}/>
+                  <Button content='Add Reply' labelPosition='left' icon='edit' primary onClick={this.handleReply}/>
+                </Form>
+              </Comment.Group>
+            </Modal.Content>
+           
+          ): null
+        }
+
         <Modal.Actions>
           <Button secondary onClick={hideListingModal}>
             Close<Icon name='close' />
@@ -116,7 +128,7 @@ class ListingModal extends Component {
           {user && <Button disabled={this.state.requestSent || listing.status !== null || user.id === listing.ownerId} primary onClick={this.sendRequest}>
             { this.state.requestSent || listing.status ? 'Pending' : 'Request to join' } <Icon name='right chevron' />
           </Button>}
-          <Button onClick={this.fetchChat}><Icon name="chat" /></Button>
+          <Button  disabled={user === null} onClick={this.fetchChat}><Icon name="chat" /></Button>
         </Modal.Actions>
       </Modal>
     )

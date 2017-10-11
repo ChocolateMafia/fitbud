@@ -17,7 +17,7 @@ class Chat extends Component {
         <Comment.Content>
           <Comment.Author as='a'>{this.props.message.userName}</Comment.Author>
           <Comment.Metadata>
-            <div>Today at 5:42PM</div>
+            <div>{this.props.message.date}</div>
           </Comment.Metadata>
           <Comment.Text>{this.props.message.name}</Comment.Text>
         </Comment.Content>
