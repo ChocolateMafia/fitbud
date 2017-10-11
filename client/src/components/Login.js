@@ -80,17 +80,58 @@ class Login extends Component {
   }
 
   // firebase facebook sign in authenticate method -> not used, using passport auth instead
-  // handleFBLogin () {
-  //   auth().signInWithPopup(facebookProvider)
-  //     .then(result => {
-  //       const token = result.credential.accessToken;
-  //       const user = result.user;
-  //       console.log('FB user logged in', result); 
-  //     })
-  //     .catch(function(error) {
-  //       console.error(error.message);
-  //     });
-  // }
+  handleFBLogin () {
+    auth().signInWithPopup(facebookProvider)
+      .then(result => {
+        console.log('FB user logged in', result); 
+
+        var payload = {
+          uid: result.user.uid,
+          token: result.credential.accessToken,
+          name: result.user.displayName,
+          email: result.user.email,
+          password: 'workoutbuddy',
+          gender: result.additionalUserInfo.profile.gender || null,
+          picture: result.user.photoURL || null
+        };
+
+        console.log(payload);
+
+        var options = {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          method: 'POST',
+          credentials: 'include',
+          body: JSON.stringify(payload)
+        };
+
+        fetch('/auth/facebook', options)
+          .then(response => {
+            if (response.ok) {
+              this.setState({
+                submit: false
+              });
+              return response.json();
+            } else {
+              this.setState({
+                errorHeader: 'Incorrect credentials',
+                errorContent: 'Please try again',
+                formError: true,
+                submit: false
+              });
+            }
+          }).then(user => {
+            if (user && user[0].email) {
+              this.props.authenticate(user[0]);
+              this.props.history.replace('/');                    
+            }
+          });        
+      })
+      .catch(function(error) {
+        console.error(error.message);
+      });
+  }
 
   // handleFBLogout() {
   //   auth().signOut()
@@ -101,10 +142,6 @@ class Login extends Component {
   //       console.error(error.message);
   //     });
   // }
-
-  handleFBLogin () {
-    // TODO: AJAX request for facebook login auth
-  }
 
   render() {
     return (
@@ -153,8 +190,8 @@ class Login extends Component {
                   header={this.state.errorHeader}
                   content={this.state.errorContent}
                 />
-                <Button onClick={this.handleFBLogin} color='facebook' size='large' fluid><Icon name='facebook' />Log In With Facebook</Button>
               </Form>
+              <Button onClick={this.handleFBLogin} color='facebook' size='large' fluid><Icon name='facebook' />Log In With Facebook</Button>
               <Message>
                 New to us? <Link to='/signup'>Sign Up</Link>
               </Message>

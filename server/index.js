@@ -9,6 +9,7 @@ var passport = require('passport');
 var db = require('../database/index.js');
 var flash = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
 
 console.log('db server', process.env.DBSERVER);
 console.log('db user', process.env.DBUSER);
@@ -22,7 +23,7 @@ var options = {
   database: 'fitbud',
   checkExpirationInterval: 60000,
   expiration: 3600000,
-}
+};
 
 var sessionStore = new MYSQLStore(options);
 
@@ -37,16 +38,18 @@ var routeWorkout = require('../routes/workout');
 var routeDashboard = require('../routes/dashboard');
 var routeLogout = require('../routes/logout');
 var routeMessages = require('../routes/messages');
+var routeFacebookAuth = require('../routes/facebookAuth');
 
 app.use(bodyParser.json()); 
 app.use(cookieParser());
 app.use(express.static('build'));
+//app.use(express.static(__dirname + '/../client/build'));
 app.use(session({
-    secret: 'secret',
-    store: sessionStore,
-    saveUninitialized: false,
-    resave: false,
-    cookie: { maxAge: 3600000}
+  secret: 'secret',
+  store: sessionStore,
+  saveUninitialized: false,
+  resave: false,
+  cookie: { maxAge: 3600000}
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -59,13 +62,13 @@ app.use(function (req, res, next) {
   console.log('req user:', req.user);
   console.log('cookie', req.cookies);
   next();
-})
-
+});
 
 app.use('/register', routeRegister);
 app.use('/login', routeLogin);
 app.use('/postings', routePostings);
 app.use('/messages', routeMessages);
+app.use('/auth/facebook', routeFacebookAuth);
 
 app.use(checkAuth);
 
@@ -80,21 +83,17 @@ app.use('/logout', routeLogout);
 function checkAuth(req, res, next) {
   if (req.isAuthenticated()) { //check if it's an authenticated route 
     next();
-  }
-  else {
+  } else {
     res.status(401).json({});
   }
 }
 
-
-
-app.listen(process.env.PORT || 3001, function(err){
-	if(err) {
-		console.log('cannot connect to the server');
-	}
-	console.log(`listening on ${process.env.PORT || 3001}`);
-})
-
+app.listen(process.env.PORT || 3001, function(err) {
+  if (err) {
+    console.log('cannot connect to the server');
+  }
+  console.log(`listening on ${process.env.PORT || 3001}`);
+});
 
 // express session 
 // express validator
