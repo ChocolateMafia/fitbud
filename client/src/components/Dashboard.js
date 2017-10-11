@@ -33,24 +33,28 @@ class Dashboard extends Component {
     console.log('getting data...')
   }
 
-  update = (userid) => {
-    console.log(userid);
-    fetch(`/postings/accept/${userid}`, { method: "PATCH" })
+
+  update(userid, postingId) {
+    var options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'PATCH',
+      body: JSON.stringify({postingId: postingId})
+    }
+    fetch(`/postings/accept/${userid}`, options)
       .then(response => {
         var newVar = !this.state.var;
         this.setState({ var: newVar });
         this.dataPull();
       })
 
-    var id = this.props.postingId;
-
-    fetch(`/postings/requests/${id}`, { credentials: "include" })
-      .then(response => response.json())
-      .then(response => {
-        console.log('requests response #' + id, response);
-        this.setState({ requests: response })
-      })
-
+    // fetch(`/postings/requests/${id}`, { credentials: "include" })
+    //   .then(response => response.json())
+    //   .then(response => {
+    //     //console.log('requests response #' + id, response);
+    //     this.setState({ requests: response })
+    //   })
     console.log('getting posting requests');
   }
 

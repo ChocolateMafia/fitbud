@@ -205,6 +205,8 @@ var createRequest = function(requestObj, callback) {
 };
 
 var createEvent = function(requestObj, callback) {
+	requestObj.description = 'New event';
+	requestObj.recipient = requestObj.author;
 	var query = 'INSERT INTO events SET ?';
 	connection.query(query, requestObj, (err, result) => {
 		if (err) {
@@ -240,17 +242,16 @@ var getUserAcceptPostings = function(userId, callback) {
   });
 };
 
-
-var updateRequest = function(userId, callback) {
-  var query = "update requests set status = ? where userId=?";
-  connection.query(query, ['accept', userId], (err, result) => {
-    if (err) {
-      console.log('error updating reqest');
-    } else {
-      console.log('updated request to accept!', result);
-      callback(result);
-    }
-  });
+var updateRequest = function(requestObj, callback) {
+	var query = "update requests set status = ? where userId=? AND postingId=?";
+	connection.query(query, ['accept', requestObj.userId, requestObj.postingId], (err, result) => {
+		if (err) {
+			console.log('error updating request');
+		} else {
+			console.log('updated request to accept!', result);
+			callback(result);
+		}
+	});
 };
 
 //insert into postings (title, location, date, duration, details, meetup_spot, buddies, userId) values ('hike', 'sf', '2017-01-01 00:00:00', 1, 'hike in muir woods', 'parking', 2, 1);
