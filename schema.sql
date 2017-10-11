@@ -48,13 +48,13 @@ CREATE TABLE profile (
 CREATE TABLE events (
   id INT NOT NULL AUTO_INCREMENT,
   created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  userId INT,
+  author INT,
+  recipient INT,
   objectId INT,
-  description varchar(255) NOT NULL,
   type varchar(20),
+  description varchar(255) NOT NULL,
   new BOOLEAN DEFAULT false,
-  PRIMARY KEY (id),
-  FOREIGN KEY (userId) REFERENCES users(id)
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE requests (
