@@ -53,7 +53,7 @@ CREATE TABLE events (
   objectId INT,
   type varchar(20),
   description varchar(255) NOT NULL,
-  new BOOLEAN DEFAULT false,
+  new BOOLEAN DEFAULT true,
   PRIMARY KEY (id)
 );
 
