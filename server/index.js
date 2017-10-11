@@ -36,6 +36,7 @@ var routeProfile = require('../routes/profile');
 var routeWorkout = require('../routes/workout');
 var routeDashboard = require('../routes/dashboard');
 var routeLogout = require('../routes/logout');
+var routeMessages = require('../routes/messages');
 
 app.use(bodyParser.json()); 
 app.use(cookieParser());
@@ -64,7 +65,7 @@ app.use(function (req, res, next) {
 app.use('/register', routeRegister);
 app.use('/login', routeLogin);
 app.use('/postings', routePostings);
-
+app.use('/messages', routeMessages);
 
 app.use(checkAuth);
 

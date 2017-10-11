@@ -51,8 +51,8 @@ class Listings extends Component {
 
   render() {
     var { listings, showModal, selectedListing } = this.state;
-    console.log(listings);
-    console.log(this.images);
+    console.log(this.props);
+    // console.log(this.images);
 
     return (
       [<Transition visible={this.state.visible} duration={1000} animation='fade'>

@@ -19,7 +19,7 @@ class App extends Component {
     this.state = {
       authenticated: false,
       user: null,
-      visible: null
+      visible: null,
     }
 
     this.cookies = new Cookies();

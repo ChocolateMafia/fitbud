@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS postings;
 DROP TABLE IF EXISTS profile;
 DROP TABLE IF EXISTS requests;
-
+DROP TABLE IF EXISTS chat;
 
 CREATE TABLE users (
   id int NOT NULL AUTO_INCREMENT,
@@ -54,6 +54,17 @@ CREATE TABLE requests (
   FOREIGN KEY (postingId) REFERENCES postings(id),
   FOREIGN KEY (userId) REFERENCES users(id)
   
+);
+
+CREATE TABLE chat (
+  id INT NOT NULL AUTO_INCREMENT,
+  name varchar(200), 
+  userId INT,  
+  postingId INT,
+  date DATETIME, 
+  PRIMARY KEY (id),
+  FOREIGN KEY (postingId) REFERENCES postings(id),
+  FOREIGN KEY (userId) REFERENCES users(id)
 );
 
 select postings.*, users.name from postings inner join users on postings.userId=users.id where postings.id=3;
