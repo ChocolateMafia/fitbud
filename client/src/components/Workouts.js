@@ -12,7 +12,7 @@ class Workouts extends Component {
     return (
       <Card.Group itemsPerRow={3}>
         {this.props.data.map(listing => (
-          <Card>
+          <Card key={listing.id}>
             <Card.Content>
               <Image src={this.props.user} size='mini' floated='left'/>
               <Card.Header>{listing.title}</Card.Header>

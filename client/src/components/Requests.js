@@ -30,7 +30,7 @@ class Requests extends Component {
     return (
       <Card.Group itemsPerRow={3}>
         {this.state.requests.map(listing => (
-          <Card>
+          <Card key={listing.id}>
             <Card.Content>
               <Image src={'/' + this.images[Math.floor(Math.random() * this.images.length)]} size='mini' floated='left'/>
               <Card.Header>{listing.activity}</Card.Header>
