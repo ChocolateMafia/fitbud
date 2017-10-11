@@ -50,16 +50,24 @@ router.get('/requests/:id', (req, res) => {
 });
 
 router.post('/:id', (req, res) => {
-  //console.log('workout req query', req.params.id);
+  console.log('workout req body', req);
   var id = req.user.id;
   var reqObj = {
     postingId: req.params.id,
     userId: id,
     status: 'pending'
   }
+  var reqObjEvent = {
+    userId: id,
+    type: 'request',
+    description: `User ${req.user.name} has requested to join your workout` 
+  }
+
   db.createRequest(reqObj, (result) => {
+    db.createEvent(reqObjEvent, (result) => {
+      res.status(200).send('request created');
+    })
     //console.log('request created in the table', result);
-    res.status(200).send('request created');
   });
 });
 
