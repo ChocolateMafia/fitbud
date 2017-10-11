@@ -140,10 +140,10 @@ var createMessage = function(msgObj, callback) {
   });
 };
 var getMessages = function(postingId, callback) {
-  var query = 'select chat.*, users.name AS userName From chat JOIN users on (chat.userId = users.id) WHERE chat.postingId = ?';
+  var query = 'select chat.*, users.name AS userName From chat JOIN users on (chat.userId = users.id) WHERE chat.postingId = ? ORDER BY chat.date ASC';
   connection.query(query, [postingId], (err, result) => {
     if (err) {
-      console.log('error creating message', err);
+      console.log('error getting message', err);
       callback(err, null);
       return;
     }
