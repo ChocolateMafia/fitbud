@@ -50,7 +50,7 @@ router.get('/requests/:id', (req, res) => {
 });
 
 router.post('/:id', (req, res) => {
-  console.log('workout req body', req);
+  //console.log('workout req body', req);
   var id = req.user.id;
   var reqObj = {
     postingId: req.params.id,
@@ -60,7 +60,7 @@ router.post('/:id', (req, res) => {
   var reqObjEvent = {
     userId: id,
     type: 'request',
-    description: `User ${req.user.name} has requested to join your workout` 
+    description: `User ${req.user.name} requested to join your workout` 
   }
 
   db.createRequest(reqObj, (result) => {
@@ -72,11 +72,17 @@ router.post('/:id', (req, res) => {
 });
 
 router.patch('/accept/:id', (req, res) => {
-  console.log('workout req query', req.params.id);
   var id = req.params.id;
+  var reqObjEvent = {
+    userId: id,
+    type: 'request',
+    description: `User accepted your request` 
+  }
   db.updateRequest(id, (result) => {
     //console.log('request created in the table', result);
-    res.status(200).send('request accepted');
+    db.createEvent(reqObjEvent, (result) => {
+      res.status(200).send('request accepted');
+    })
   });
 });
 
