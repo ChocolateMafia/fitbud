@@ -51,7 +51,7 @@ CREATE TABLE events (
   author INT,
   recipient INT,
   objectId INT,
-  type varchar(20),
+  type ENUM('requests', 'chat', 'postings'),
   description varchar(255) NOT NULL,
   new BOOLEAN DEFAULT true,
   PRIMARY KEY (id)

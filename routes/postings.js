@@ -64,7 +64,7 @@ router.post('/:id', (req, res) => {
     var reqObjEvent = {
       author: userId,
       objectId: result.insertId,
-      type: 'request'
+      type: 'requests'
     }
     db.createEvent(reqObjEvent, (result) => {
       res.status(200).send('request created');
