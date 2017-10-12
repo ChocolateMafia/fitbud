@@ -68,17 +68,16 @@ class Dashboard extends Component {
     this.dataPull();
   }
 
-  images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
-
-  user = '/' + this.images[Math.floor(Math.random() * this.images.length)];
-
   render() {
     var { listings } = this.props;
-    //console.log(this.props);
+    var images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
+    var userPic = '/' + images[Math.floor(Math.random() * images.length)];
+    var user = {picture: userPic};
+
     return (
       <Container style={{marginTop: '20px'}}>
 
-        <ProfilePic user={this.user}/>
+        <ProfilePic user={this.props.user || user}/>
 
         <DashNav handleClick={this.handleTabClick} view={this.state.view}/>
 

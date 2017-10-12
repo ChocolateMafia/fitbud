@@ -87,7 +87,7 @@ class App extends Component {
             <Route exact path='/signup' component={Signup} />
 
             <Route exact path='/dashboard' render={props => (
-              <Dashboard listings={data} {...props} user={this.state.user}/>
+              <Dashboard listings={data} user={this.state.user} {...props} />
             )} />
 
             <Route exact path='/create' render={props => (
@@ -95,7 +95,7 @@ class App extends Component {
             )} />
 
             <Route exact path='/profile' render={props => (
-              <Profile {...props} />
+              <Profile user={this.state.user} {...props} />
             )} />
 
             <Route component={NoMatch} />
