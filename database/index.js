@@ -183,7 +183,7 @@ var getRequestsByPostingId = function(postingId, callback) {
 
 var getUserRequestPostings = function(userId, callback) {
 //title, loation, date, duration
-  var query = 'select p.location, p.date, p.duration, p.details from requests r left join postings p on r.postingId = p.id where r.status = "pending" and r.userId = ?';
+  var query = 'select p.location, p.date, p.duration, p.details, p.id from requests r left join postings p on r.postingId = p.id where r.status = "pending" and r.userId = ?';
   connection.query(query, [userId], (err, result) => {
     if (err) {
       console.error('error getting requests by userId');

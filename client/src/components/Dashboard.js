@@ -74,7 +74,7 @@ class Dashboard extends Component {
 
   render() {
     var { listings } = this.props;
-
+    //console.log(this.props);
     return (
       <Container style={{marginTop: '20px'}}>
 
@@ -82,8 +82,8 @@ class Dashboard extends Component {
 
         <DashNav handleClick={this.handleTabClick} view={this.state.view}/>
 
-        {this.state.view === 'my workouts' && (<Workouts key='workouts' data={this.state.data} user={this.user} update={this.update} dataPull={this.dataPull} />)}
-        {this.state.view === 'my requests' && ([<Requests key='requests'/>])}
+        {this.state.view === 'my workouts' && (<Workouts key='workouts' data={this.state.data} userPic={this.user} user={this.props.user} update={this.update} dataPull={this.dataPull} />)}
+        {this.state.view === 'my requests' && ([<Requests key='requests' user={this.props.user}/>])}
         {this.state.view === 'upcoming workouts' && ([<Invites key='invites'/>])}
         {this.state.view === 'events' && ([<Events key='events'/>])}
 
