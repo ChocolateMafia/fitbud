@@ -9,6 +9,7 @@ import Listings from './Listings';
 import NoMatch from './NoMatch';
 import Dashboard from './Dashboard';
 import CreateListing from './CreateListing';
+import Profile from './Profile';
 import data from '../sampleData';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 
@@ -91,6 +92,10 @@ class App extends Component {
 
             <Route exact path='/create' render={props => (
               <CreateListing {...props} />
+            )} />
+
+            <Route exact path='/profile' render={props => (
+              <Profile {...props} />
             )} />
 
             <Route component={NoMatch} />
