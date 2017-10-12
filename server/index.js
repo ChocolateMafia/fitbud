@@ -37,6 +37,7 @@ var routeProfile = require('../routes/profile');
 var routeWorkout = require('../routes/workout');
 var routeDashboard = require('../routes/dashboard');
 var routeLogout = require('../routes/logout');
+var routeEvents = require('../routes/events');
 var routeMessages = require('../routes/messages');
 var routeFacebookAuth = require('../routes/facebookAuth');
 
@@ -67,6 +68,7 @@ app.use(function (req, res, next) {
 app.use('/register', routeRegister);
 app.use('/login', routeLogin);
 app.use('/postings', routePostings);
+app.use('/events', routeEvents);
 app.use('/messages', routeMessages);
 app.use('/auth/facebook', routeFacebookAuth);
 

@@ -207,6 +207,10 @@ var createRequest = function(requestObj, callback) {
 };
 
 var createEvent = function(requestObj, callback) {
+  //author: userId,
+  //objectId: requestId,
+  //type: 'requests',
+  //status: 'accepted'
   var description = '';
   return new Promise((resolve, reject) => {
     var query = `SELECT name FROM users WHERE id=${requestObj.author}`;
@@ -267,6 +271,17 @@ var createEvent = function(requestObj, callback) {
   })
 };
 
+var getEvents = function(userId, callback) {
+  var query = `SELECT * FROM events WHERE recipient=${userId}`;
+  connection.query(query, (error, result) => {
+      if (error) {
+        callback(error, null);
+      } else {
+        callback(null, result);
+        }
+      })
+}
+
 var createPair = function(requestObj, callback) {
   var query = 'INSERT INTO requests SET ?';
   connection.query(query, requestObj, (err, result) => {
@@ -318,6 +333,7 @@ module.exports = {
   getUserRequestPostings,
   createRequest,
   createEvent,
+  getEvents,
   createPair,
   getUserAcceptPostings,
   getRequestsByPostingId,
