@@ -34,13 +34,13 @@ class Dashboard extends Component {
   }
 
 
-  update(userid, postingId) {
+  update(userid, postingId, requestId) {
     var options = {
       headers: {
         'Content-Type': 'application/json'
       },
       method: 'PATCH',
-      body: JSON.stringify({postingId: postingId})
+      body: JSON.stringify({postingId: postingId, requestId: requestId})
     }
     fetch(`/postings/accept/${userid}`, options)
       .then(response => {

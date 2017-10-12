@@ -64,7 +64,8 @@ router.post('/:id', (req, res) => {
     var reqObjEvent = {
       author: userId,
       objectId: result.insertId,
-      type: 'requests'
+      type: 'requests',
+      status: 'new'
     }
     db.createEvent(reqObjEvent, (result) => {
       res.status(200).send('request created');
@@ -75,6 +76,7 @@ router.post('/:id', (req, res) => {
 router.patch('/accept/:id', (req, res) => {
   var userId = req.params.id;
   var postingId = req.body.postingId;
+  var requestId = req.body.requestId;
   var reqObj = {
     postingId: postingId,
     userId: userId
@@ -82,8 +84,9 @@ router.patch('/accept/:id', (req, res) => {
   db.updateRequest(reqObj, (result) => {
     var reqObjEvent = {
       author: userId,
-      objectId: result.insertId,
-      type: 'request'
+      objectId: requestId,
+      type: 'requests',
+      status: 'accepted'
     }
     db.createEvent(reqObjEvent, (result) => {
       res.status(200).send('request accepted');
