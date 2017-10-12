@@ -24,14 +24,14 @@ class Dashboard extends Component {
   }
 
   dataPull() {
-    fetch('/dashboard', { credentials: "include" })
+    fetch('/dashboard', { credentials: 'include' })
       .then(response => response.json())
       .then(response => {
         console.log('response', response);
-        this.setState({ data: response })
-      })
+        this.setState({ data: response });
+      });
 
-    console.log('getting data...')
+    console.log('getting data...');
   }
 
 
@@ -42,13 +42,13 @@ class Dashboard extends Component {
       },
       method: 'PATCH',
       body: JSON.stringify({postingId: postingId, requestId: requestId})
-    }
+    };
     fetch(`/postings/accept/${userid}`, options)
       .then(response => {
         var newVar = !this.state.var;
         this.setState({ var: newVar });
         this.dataPull();
-      })
+      });
 
     // fetch(`/postings/requests/${id}`, { credentials: "include" })
     //   .then(response => response.json())
@@ -62,7 +62,7 @@ class Dashboard extends Component {
   handleTabClick(e, { name }) {
     // console.log('I\'ve been clicked, and my name is: ' + name);
     this.setState({ view: name });
-  };
+  }
 
   componentDidMount() {
     this.dataPull();
@@ -87,12 +87,12 @@ class Dashboard extends Component {
         {this.state.view === 'events' && ([<Events key='events'/>])}
 
       </Container>
-    )
+    );
   }
 }
 
 export default Dashboard;
 
 //profile pic
-  //username
+//username
 //
