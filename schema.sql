@@ -5,6 +5,7 @@ CREATE DATABASE fitbud;
 USE fitbud;
 
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS friends;
 DROP TABLE IF EXISTS postings;
 DROP TABLE IF EXISTS profile;
 DROP TABLE IF EXISTS requests;
@@ -12,26 +13,37 @@ DROP TABLE IF EXISTS chat;
 DROP TABLE IF EXISTS events;
 
 CREATE TABLE users (
-  id int NOT NULL AUTO_INCREMENT,
-  name varchar(255) NOT NULL,
-  email varchar(255) NOT NULL,
-  password varchar(255) NOT NULL,
-  uid varchar(255),
-  token varchar(255),
-  gender varchar(50),
-  picture varchar(255),
-  age int,
+  id INT NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  uid VARCHAR(255),
+  token VARCHAR(255),
+  gender VARCHAR(50),
+  picture VARCHAR(255),
+  age INT,
+  rating float(2,1),
+  r_count INT DEFAULT 0,
   PRIMARY KEY (id)
+);
+
+CREATE TABLE friendship (
+  id INT NOT NULL AUTO_INCREMENT,
+  userId INT NOT NULL,
+  friendId INT NOT NULL,
+  PRIMARY KEY (id, userId, friendId),
+  FOREIGN KEY (userId) REFERENCES users(id),
+  FOREIGN KEY (friendId) REFERENCES users(id)
 );
 
 CREATE TABLE postings (
   id INT NOT NULL AUTO_INCREMENT,
-  title varchar(50),
-  location varchar(255) NOT NULL,
+  title VARCHAR(50),
+  location VARCHAR(255) NOT NULL,
   date DATETIME,
   duration INT NOT NULL,
-  details varchar(255) NOT NULL,
-  meetup_spot varchar(255) NOT NULL,
+  details VARCHAR(255) NOT NULL,
+  meetup_spot VARCHAR(255) NOT NULL,
   buddies INT NOT NULL,
   userId INT,
   
@@ -41,8 +53,8 @@ CREATE TABLE postings (
 
 CREATE TABLE profile (
   id INT NOT NULL AUTO_INCREMENT,
-  gender varchar(20), 
-  activity varchar(255) NOT NULL,
+  gender VARCHAR(20), 
+  activity VARCHAR(255) NOT NULL,
   userId INT,  
   PRIMARY KEY (id),
   FOREIGN KEY (userId) REFERENCES users(id)
@@ -55,7 +67,7 @@ CREATE TABLE events (
   recipient INT,
   objectId INT,
   type ENUM('requests', 'chat', 'postings'),
-  description varchar(255) NOT NULL,
+  description VARCHAR(255) NOT NULL,
   new BOOLEAN DEFAULT true,
   PRIMARY KEY (id)
 );
@@ -74,7 +86,7 @@ CREATE TABLE requests (
 
 CREATE TABLE chat (
   id INT NOT NULL AUTO_INCREMENT,
-  name varchar(200), 
+  name VARCHAR(200), 
   userId INT,  
   postingId INT,
   date DATETIME, 
