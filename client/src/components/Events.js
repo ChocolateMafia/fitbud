@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Card, Icon, Image, Table } from 'semantic-ui-react';
+import { Icon, Feed } from 'semantic-ui-react';
+var moment = require('moment');
 
 class Events extends Component {
   constructor(props) {
@@ -28,33 +29,25 @@ class Events extends Component {
 
   render() {
     return (
-      <Table>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>
-              When
-            </Table.HeaderCell>
-            <Table.HeaderCell>
-              What
-            </Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-        <Table.Body>
-         {this.state.events.map(event => (
-          <Table.Row key={event.id}>
-            <Table.Cell>
-              {event.created}
-            </Table.Cell>
-            <Table.Cell>
-              {event.description}
-            </Table.Cell>
-          </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+     <Feed>
+     {this.state.events.map(event => (
+        <Feed.Event key={event.id}>
+          <Feed.Label>
+            <img src={this.images[Math.floor(Math.random() * this.images.length)]} />
+          </Feed.Label>
+          <Feed.Content>
+            <Feed.Summary>
+               {event.description}
+              <Feed.Date>{moment(event.created).fromNow()}</Feed.Date>
+            </Feed.Summary>
+            <Feed.Meta>
+            </Feed.Meta>
+          </Feed.Content>
+        </Feed.Event>
+       ))}
+      </Feed>
     )
   }
-
 }
 
 export default Events;
