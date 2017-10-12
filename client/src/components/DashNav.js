@@ -12,6 +12,7 @@ class DashNav extends Component {
         <Menu.Item name='my workouts' active={this.props.view === 'my workouts'} onClick={this.props.handleClick} />
         <Menu.Item name='my requests' active={this.props.view === 'my requests'} onClick={this.props.handleClick} />
         <Menu.Item name='upcoming workouts' active={this.props.view === 'upcoming workouts'} onClick={this.props.handleClick} />
+        <Menu.Item name='events' active={this.props.view === 'events'} onClick={this.props.handleClick} />
       </Menu>
     )
   }

@@ -6,6 +6,7 @@ import DashNav from './DashNav';
 import Workouts from './Workouts';
 import Requests from './Requests';
 import Invites from './Invites';
+import Events from './Events';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -81,10 +82,11 @@ class Dashboard extends Component {
 
         <DashNav handleClick={this.handleTabClick} view={this.state.view}/>
 
-        {this.state.view === 'my workouts' && (<Workouts data={this.state.data} user={this.user} update={this.update} dataPull={this.dataPull} />)}
-        {this.state.view === 'my requests' && ([<Requests />])}
-        {this.state.view === 'upcoming workouts' && ([<Invites />])}
-        
+        {this.state.view === 'my workouts' && (<Workouts key='workouts' data={this.state.data} user={this.user} update={this.update} dataPull={this.dataPull} />)}
+        {this.state.view === 'my requests' && ([<Requests key='requests'/>])}
+        {this.state.view === 'upcoming workouts' && ([<Invites key='invites'/>])}
+        {this.state.view === 'events' && ([<Events key='events'/>])}
+
       </Container>
     )
   }
