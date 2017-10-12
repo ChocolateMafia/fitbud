@@ -7,69 +7,36 @@ var FacebookStrategy = require('passport-facebook').Strategy;
 var flash = require('connect-flash');
 var configAuth = require('./../config/auth');
 
-passport.use(new LocalStrategy(
-  function(username, password, done) {
-    console.log('username and password:', username, password);
-    db.checkUser(username, function (err, dbUserResult) { 
-      console.log('user inside passport:', dbUserResult);
-      if (err) { return done(err); }
-      if (!dbUserResult) { return done(null, false); }
-      db.comparePassword(password, dbUserResult[0].password, function(err, isMatch) {
-        //console.log('inside passports compare password');
-        if (err) {
-          //console.log('cannot compare passwords');
-        }
-        if (isMatch) {
-          return done (null, dbUserResult, {message: 'password matched'});
-        } else {
-          //console.log('checking for invalid password')
-          return done(null, false, {message: 'invalid password'});
-        }
+const createFBUser = (req, res, next) => {
+  db.checkUser(req.body.username, function(err, result) {
+    if (result) {
+      next();
+    } else {
+      db.createUser({
+        email: req.body.username, 
+        name: req.body.name, 
+        password: req.body.password,
+        uid: req.body.uid,
+        token: req.body.token,
+        gender: req.body.gender,
+        picture: req.body.picture        
+      }, (err, result) => {
+        err ? res.status(401).json({userCreated: false}) : next();
       });
-    });
-  }));
-
-passport.serializeUser(function(user, done) {
-  //console.log('user in serialize', user);
-  done(null, user);
-});
-
-passport.deserializeUser(function(user, done) {
-  done(null, user);
-  // console.log('in deserialize', id);
-  // db.findById(id, function(err, user) {
-  // // console.log('user in deserialize', user);
-  //   done(err, user);
-  //  });
-});
-
-// on success login, redirect to dashboards
-// successRedirect:'/', 
-
-  //passport.authenticate('facebook', { scope: 'email' }),
-// on successful login
-router.get('/',
-  function(req, res) {
-    console.log('faceboooooook login detected');
-    // console.log('request inside login:', req)
-    //console.log('cookies', req.cookies);
-    // res.redirect('/dashboard');
-    // console.log('auth user:', req.user);
-    // res.json(req.user);
+    }
   });
+};
 
-// router.get('/callback', 
-//   passport.authenticate('facebook', { failureRedirect: '/' }),
-//   (req, res) => {
-//     console.log('calllllllback  req');
-//     res.json({username: 'kenny'});
-//   });
+router.post('/',
+  createFBUser,
+  passport.authenticate('local', {failureFlash: true, successFlash: true}),
+  (req, res) => {
+    res.json(req.user);
+  }  
+);
 
-// router.get('/', (req, res) => {
-//   //console.log('login get')
-//   res.end();
-// });
+router.get('/', (req, res) => {
+  res.end();
+});
 
 module.exports = router;
-//create register
-//login 

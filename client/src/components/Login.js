@@ -47,8 +47,6 @@ class Login extends Component {
       body: JSON.stringify(payload)
     };
 
-    // console.log(this.props);
-
     fetch('/login', options)
       .then(response => {
         if (response.ok) {
@@ -65,8 +63,9 @@ class Login extends Component {
           });
         }
       }).then(user => {
-        if (user && user[0].email) {
-          this.props.authenticate(user[0]);
+        console.log(user);
+        if (user && user.email) {
+          this.props.authenticate(user);
           this.props.history.replace('/');                    
         }
       });
@@ -89,7 +88,7 @@ class Login extends Component {
           uid: result.user.uid,
           token: result.credential.accessToken,
           name: result.user.displayName,
-          email: result.user.email,
+          username: result.user.email,
           password: 'workoutbuddy',
           gender: result.additionalUserInfo.profile.gender || null,
           picture: result.user.photoURL || null
@@ -122,8 +121,9 @@ class Login extends Component {
               });
             }
           }).then(user => {
-            if (user && user[0].email) {
-              this.props.authenticate(user[0]);
+            console.log(user);
+            if (user && user.email) {
+              this.props.authenticate(user);
               this.props.history.replace('/');                    
             }
           });        
