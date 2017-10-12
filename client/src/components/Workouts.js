@@ -34,6 +34,9 @@ class Workouts extends Component {
   }
   render() {
     var { listing, showModal, selectedListing } = this.state;
+    var images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
+    var userPic = '/' + images[Math.floor(Math.random() * images.length)];
+
     //console.log('what is passing to workouts from dashboard', this.props);
     return (
       [<Transition visible={this.state.visible} duration={1000} animation='fade'>
@@ -42,7 +45,7 @@ class Workouts extends Component {
             {this.props.data.map(listing => (
               <Card key={listing.id} onClick={() =>this.showListingModal(listing)}>
                 <Card.Content>
-                  <Image src={this.props.userPic} size='mini' floated='left'/>
+                  <Image src={this.props.user.picture || userPic} size='mini' floated='left'/>
                   <Card.Header>{listing.title}</Card.Header>
                   <Card.Meta>{listing.location}</Card.Meta>
                   <Card.Description>{`${listing.details} on ${listing.date} for ${listing.duration} hour(s)`}</Card.Description>
@@ -60,7 +63,7 @@ class Workouts extends Component {
           <ListingModal listing={selectedListing} open={this.state.showModal} 
                         hideListingModal={this.hideListingModal} 
                         user={this.props.user}
-                        userImage={this.props.userPic} />
+                        userImage={this.props.user.picture || userPic} />
         )}
       </Container>]
     )
