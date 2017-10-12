@@ -36,7 +36,7 @@ class IndividualRequest extends Component {
           <span>
             <Button basic color='green' size='mini' style={{margin: '10px'}}
               onClick={() => {
-                this.props.update(this.props.request.userId, this.props.request.postingId);
+                this.props.update(this.props.request.userId, this.props.request.postingId, this.props.request.id);
                 this.setState({clicked: !this.state.clicked})
               }} >Accept</Button>
           </span>
