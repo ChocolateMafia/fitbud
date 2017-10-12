@@ -26,8 +26,6 @@ class Signup extends Component {
     }
 
     console.log(this.props);
-
-    this.handleFBSignup = this.handleFBSignup.bind(this);
   }
 
   componentDidMount() {
@@ -38,6 +36,8 @@ class Signup extends Component {
 
   onValidSubmit = (formData) => {
     this.setState({submit: true});
+
+    console.log(formData);
 
     var options = {
       headers: {
@@ -62,10 +62,6 @@ class Signup extends Component {
         }
       })
   };
-
-  handleFBSignup () {
-    // TODO: AJAX Request to Facebook Login
-  }
 
   render() {
     const errorLabel = <Label color="red" pointing/>;
@@ -185,7 +181,6 @@ class Signup extends Component {
                          header={this.state.errorHeader}
                          content={this.state.errorContent}
                 />
-                <br/><Button onClick={this.handleFBSignup} color='facebook' size='large' fluid><Icon name='facebook' />Sign Up With Facebook</Button>                                                                                                                                                        
               </Form>
             </Grid.Column>
           </Grid>
