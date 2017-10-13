@@ -50,7 +50,6 @@ class ListingModal extends Component {
     fetch('/messages', options)
       .then(response => {
         if (response.ok) {
-          console.log('message POST');
           self.fetchChat();
         } 
       })

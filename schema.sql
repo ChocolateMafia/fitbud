@@ -89,7 +89,7 @@ CREATE TABLE chat (
   name VARCHAR(200), 
   userId INT,  
   postingId INT,
-  date DATETIME, 
+  date TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
   PRIMARY KEY (id),
   FOREIGN KEY (postingId) REFERENCES postings(id),
   FOREIGN KEY (userId) REFERENCES users(id)

@@ -9,7 +9,7 @@ router.post('/', (req, res) => {
   console.log(req.body);
   var data = {
     name: req.body.name,
-    date: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
+    // date: (new Date()).toISOString().substring(0, 19).replace('T', ' '),
     userId: userId,
     postingId: postingId
   };
