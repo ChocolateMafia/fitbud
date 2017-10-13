@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Comment, Form, Header } from 'semantic-ui-react'
+var moment = require('moment');
 
 class Chat extends Component {
   constructor(props) {
@@ -17,7 +18,7 @@ class Chat extends Component {
         <Comment.Content>
           <Comment.Author as='a'>{this.props.message.userName}</Comment.Author>
           <Comment.Metadata>
-            <div>{this.props.message.date}</div>
+            <div>{moment(this.props.message.date).fromNow()}</div>
           </Comment.Metadata>
           <Comment.Text>{this.props.message.name}</Comment.Text>
         </Comment.Content>

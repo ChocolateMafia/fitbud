@@ -56,7 +56,7 @@ class Requests extends Component {
                   <Image src={listing.picture? listing.picture: '/' + this.images[Math.floor(Math.random() * this.images.length)]} size='mini' floated='left'/>
                   <Card.Header>{listing.activity}</Card.Header>
                   <Card.Meta>{listing.location}</Card.Meta>
-                  <Card.Description>{`Schedule on ${listing.date} for ${listing.duration} hours`}</Card.Description>
+                  <Card.Description>{`Schedule on ${new Date(listing.date).toDateString()} for ${listing.duration} hours`}</Card.Description>
                 </Card.Content>
               </Card>
             ))}
