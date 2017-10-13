@@ -53,7 +53,6 @@ class Listings extends Component {
     var { listings, showModal, selectedListing } = this.state;
     console.log(this.props);
     var randomPic='/' + this.images[Math.floor(Math.random() * this.images.length)];
-    // console.log(this.images);
 
     return (
       [<Transition visible={this.state.visible} duration={1000} animation='fade'>
