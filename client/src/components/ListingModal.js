@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Modal, Header, Button, Image, Icon, Divider, Comment, Form} from 'semantic-ui-react';
+import { Modal, Header, Button, Image, Icon, Divider, Comment, Form, Popup } from 'semantic-ui-react';
 import Chat from './Chat';
+import ProfilePopUp from './ProfilePopUp';
+
 class ListingModal extends Component {
   constructor(props) {
     super(props);
@@ -25,12 +27,14 @@ class ListingModal extends Component {
       if (response.ok) console.log('request made!');
     })
   }
+
   handleTextBox = (e) => {
     var text = e.target.value
     this.setState({
       text: text
     });
   }
+
   handleReply = () => {
     var message = {
       name: this.state.text,
@@ -69,20 +73,19 @@ class ListingModal extends Component {
         })
       })
   }
+
   render() {
-    var { listing, open, hideListingModal, userImage, user, messages} = this.props;
+    var { listing, open, hideListingModal, ownerImage, user, messages} = this.props;
+    //console.log('listing modal user', user);
 
     return (
-      <Modal open={open} onClose={hideListingModal} closeIcon dimmer='blurring'>
+      <Modal open={open} onClose={hideListingModal} closeIcon dimmer='false'>
         <Modal.Header>{listing.title}</Modal.Header>
         
         <Modal.Content image scrolling>
-          <Image
-            size='small'
-            src={userImage}
-            wrapped
-            shape='circular'
-          />
+
+          <ProfilePopUp on='hover' component={(<Image size='small' src={ownerImage} wrapped shape='circular'/>)}>        
+          </ProfilePopUp>
 
           <Modal.Description>
             <Header>{listing.name}</Header>
@@ -105,8 +108,6 @@ class ListingModal extends Component {
                   key={index}
                   message={message}
                   listing={listing}
-                  userImage={userImage}
-                  user={user}
                   />
                 )}
                 <Form reply>
