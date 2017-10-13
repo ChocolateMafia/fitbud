@@ -29,7 +29,7 @@ router.post('/', (req, res) => {
 
   db.createWorkout(workoutObj, (err, dbResult) => {
     res.status(201).send(dbResult);
-  })
+  });
   
 });
 
@@ -57,19 +57,20 @@ router.post('/:id', (req, res) => {
     postingId: postingId,
     userId: userId,
     status: 'pending'
-  }
+  };
 
   db.createRequest(reqObj, (result) => {
     console.log('createRequest result:', result);
     var reqObjEvent = {
       author: userId,
       objectId: result.insertId,
+      postingId: postingId,
       type: 'requests',
       status: 'new'
-    }
+    };
     db.createEvent(reqObjEvent, (result) => {
       res.status(200).send('request created');
-    })
+    });
   });
 });
 
@@ -80,17 +81,18 @@ router.patch('/accept/:id', (req, res) => {
   var reqObj = {
     postingId: postingId,
     userId: userId
-  }
+  };
   db.updateRequest(reqObj, (result) => {
     var reqObjEvent = {
-      author: userId,
+      author: null,
       objectId: requestId,
+      postingId: postingId,
       type: 'requests',
       status: 'accepted'
-    }
+    };
     db.createEvent(reqObjEvent, (result) => {
       res.status(200).send('request accepted');
-    })
+    });
   });
 });
 
