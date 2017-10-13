@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { Button, Comment, Form, Header } from 'semantic-ui-react'
+import { Button, Comment, Form, Header } from 'semantic-ui-react';
 var moment = require('moment');
+
 
 class Chat extends Component {
   constructor(props) {
     super(props);
     this.state = {
 
-    }
+    };
   }
 
   render() {
@@ -23,7 +24,7 @@ class Chat extends Component {
           <Comment.Text>{this.props.message.name}</Comment.Text>
         </Comment.Content>
       </Comment>
-    )
+    );
   }
 
 }

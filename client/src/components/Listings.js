@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Container, Icon, Transition } from 'semantic-ui-react';
+import { Card, Container, Icon, Transition, Popup, Button } from 'semantic-ui-react';
 import ListingCard from './ListingCard.js';
 import ListingModal from './ListingModal.js';
 
@@ -21,9 +21,7 @@ class Listings extends Component {
   }
 
   updateListings () {
-    fetch('/postings', {
-      credentials: 'include'
-    })
+    fetch('/postings', {credentials: 'include'})
       .then(response => response.json())
       .then(listings => {
         console.log('listings', listings);
@@ -31,8 +29,13 @@ class Listings extends Component {
       });
   }
 
-  fetchOwnerData () {
-
+  fetchOwnerData (ownerId) {
+    fetch('/profile/' + ownerId, {credentials: 'include'})
+      .then(response => response.json())
+      .then(owner => {
+        console.log('Owner Data', owner);
+        this.setState({owner});
+      });
   }
 
   componentDidMount() {
@@ -43,6 +46,7 @@ class Listings extends Component {
   }
 
   showListingModal(listing) {
+    this.fetchOwnerData(listing.ownerId);
     this.setState({
       showModal: true,
       selectedListing: listing
@@ -66,7 +70,7 @@ class Listings extends Component {
 
     return (
       [<Transition visible={this.state.visible} duration={1000} animation='fade'>
-        <Container style={{marginTop: '20px'}}>
+        <Container style={{marginTop: '20px'}}>        
           <Card.Group itemsPerRow={3}>
             {listings.map(listing => (
               <ListingCard 
@@ -75,7 +79,6 @@ class Listings extends Component {
                 showListingModal={this.showListingModal}
                 userPic={listing.picture ? listing.picture : ('/' + images[Math.floor(Math.random() * images.length)])} 
               />
-
             ))}
           </Card.Group>
         </Container>
@@ -87,7 +90,8 @@ class Listings extends Component {
             open={this.state.showModal} 
             hideListingModal={this.hideListingModal} 
             user={this.props.user}
-            userImage={selectedListing.picture ? selectedListing.picture : randomPic}
+            ownerImage={selectedListing.picture ? selectedListing.picture : randomPic}
+            owner={this.state.owner}
           />
         )}
       </Container>]

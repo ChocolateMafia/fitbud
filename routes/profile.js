@@ -3,8 +3,10 @@ var router = express.Router();
 var db = require('../database/index.js');
 var bcrypt = require('bcrypt');
 
-router.get('/', (req, res) => {
-
+router.get('/:ownerId', (req, res) => {
+  db.findById(req.params.ownerId, (err, user) => {
+    err ? res.status(400).json() : res.json(user);
+  });
 });
 
 router.post('/', (req, res) => {
