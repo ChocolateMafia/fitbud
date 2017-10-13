@@ -206,81 +206,145 @@ var createRequest = function(requestObj, callback) {
   });
 };
 
-var createEvent = function(requestObj, callback) {
-  //author: userId,
-  //objectId: requestId,
-  //type: 'requests',
-  //status: 'accepted'
-  var description = '';
+//helper functions to work with events
+//they return Promises
+var getAuthorForEvent = function(authorId, postingId) {
   return new Promise((resolve, reject) => {
-    var query = `SELECT name FROM users WHERE id=${requestObj.author}`;
-    return connection.query(query, (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result);
-        }
-      });
-    })
-  .then((result) => {
-    var name = result.length === 0 ? 'Anonymous' : result[0].name;
-    description += name;
-    return new Promise((resolve, reject) => {
-    if (requestObj.type === 'requests') {
-      if (requestObj.status === 'new') {
-        description += ' asked to join';
-      } 
-      if (requestObj.status === 'accepted') {
-         description += ' accepted your request to join';
-      }
-      var query = `SELECT postings.title FROM requests, postings WHERE requests.id=${requestObj.objectId} and requests.postingId=postings.id`;
-      return connection.query(query, (error, result) => {
-        if (error) {
-          reject(error);
-        } else {
-          resolve(result);
-        }
-      });
+    if (authorId) {
+      var query = `SELECT name, id FROM users WHERE id=${authorId}`;
     } else {
-      description += 'did something';
-      return resolve([]);
+      var query = `SELECT name, users.id FROM users, postings WHERE postings.id=${postingId} AND postings.userId=users.id`;
     }
-  })
-  })
-  .then((result) => {
-    var title = result.length === 0 ? 'unknown workout' : result[0].title;
-    description += ' ' + title;
-    var insertObj = {author: requestObj.author, objectId: requestObj.objectId, type: requestObj.type, description: description};
-    var query = 'INSERT INTO events SET ?';
-    return new Promise((resolve, reject) => {
-      connection.query(query, insertObj, (error, result) => {
+    return connection.query(query, (error, result) => {
       if (error) {
         reject(error);
       } else {
         resolve(result);
+      }
+    });
+  });
+};
+
+var getRecipientsForEvent = function(authorId, objectId, postingId, type, status) {
+  return new Promise((resolve, reject) => {
+    var query;
+    if (type === 'requests') {
+      if (status === 'new') {
+        query = `SELECT userId FROM postings WHERE id=${postingId}`;
+      }
+      if (status === 'accepted') {
+        query = `SELECT userId FROM requests WHERE id=${objectId}`;
+      }
+    }
+    if (type === 'chat') {
+      query = `SELECT userId FROM requests WHERE postingId=${postingId}
+        UNION SELECT userId FROM chat WHERE postingId=${postingId}
+        UNION SELECT userId FROM postings WHERE id=${postingId}`;
+    }
+    return connection.query(query, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
+var getPostingForEvent = function(objectId, postingId, type, status) {
+  return new Promise((resolve, reject) => {
+    if (type === 'requests') {
+      var query = `SELECT postings.title FROM requests, postings WHERE requests.id=${objectId} and requests.postingId=postings.id`;
+    } else {
+      var query = `SELECT title FROM postings WHERE id=${postingId}`;
+    } 
+    return connection.query(query, (error, result) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+//end of helpers
+
+var createEvent = function(requestObj, callback) {
+  //author: userId or null
+  //objectId: requestId,
+  //type: 'requests',
+  //status: 'accepted'
+  //postingId: postingId,
+  var description = '';
+  var title = '';
+  return getAuthorForEvent(requestObj.author, requestObj.postingId)
+    .then((result) => {
+      if (result.length) {
+        var name = result[0].name;
+        requestObj.author = result[0].id;
+      } else {
+        var name = 'Anonymous';
+      }
+      description += name;
+      if (requestObj.type === 'requests') {
+        if (requestObj.status === 'new') {
+          description += ' asked to join';
         }
-      })
+        if (requestObj.status === 'accepted') {
+          description += ' accepted your request to join';
+        }
+      }
+      if (requestObj.type === 'chat') {
+        description += ' posted new message at';
+      }
+      return getPostingForEvent(requestObj.objectId, requestObj.postingId, requestObj.type, requestObj.status);
     })
-  })
-  .then((result) => {
-    console.log('createEvent result', result);
-    callback(result);
-  })
-  .catch((error) => {
-    console.log('error creating event', error.message);
-  })
+    .then((result) => {
+      title = result.length === 0 ? 'unknown workout' : result[0].title;
+      description += ' ' + title;
+      return getRecipientsForEvent(requestObj.author, requestObj.objectId, requestObj.postingId, requestObj.type, requestObj.status)
+    })
+    .then((result) => {
+      var recipients = result.reduce((acc, object) => {
+        if (object.userId !== requestObj.author) {
+          acc.push(object.userId);
+        }
+        return acc; 
+      }, []);
+      var promises = recipients.map((userId) => {
+        var insertObj = {recipient: userId, author: requestObj.author, objectId: requestObj.objectId, type: requestObj.type, description: description};
+        var query = 'INSERT INTO events SET ?';
+        return new Promise((resolve, reject) => {
+          connection.query(query, insertObj, (error, result) => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(result);
+            }
+          });
+        });
+      });
+      return Promise.all(promises);
+    })
+    .then((result) => {
+      console.log('createEvent result', result);
+      callback(result);
+    })
+    .catch((error) => {
+      console.log('error creating event', error);
+    });
 };
 
 var getEvents = function(userId, callback) {
   var query = `SELECT * FROM events WHERE recipient=${userId}`;
   connection.query(query, (error, result) => {
-      if (error) {
-        callback(error, null);
-      } else {
-        callback(null, result);
-        }
-      })
-}
+    if (error) {
+      callback(error, null);
+    } else {
+      callback(null, result);
+    }
+  });
+};
 
 var createPair = function(requestObj, callback) {
   var query = 'INSERT INTO requests SET ?';

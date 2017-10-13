@@ -27,6 +27,7 @@
     "passport-local": "*"
   },
   "devDependencies": {
+    "eslint": "^4.8.0",
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor"
   },
   "engines": {
