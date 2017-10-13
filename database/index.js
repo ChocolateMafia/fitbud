@@ -400,7 +400,6 @@ var createPair = function(requestObj, callback) {
 };
 
 var getUserAcceptPostings = function(userId, callback) {
-
   var query = `SELECT p.*
     FROM requests r LEFT JOIN postings p ON r.postingId = p.id WHERE r.UserId = ? and r.status = ?
     UNION
