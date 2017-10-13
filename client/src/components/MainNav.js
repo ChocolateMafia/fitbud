@@ -15,10 +15,12 @@ class MainNav extends Component {
   }
 
   handleLoginClick() {
-    this.setState({eventsCount: 0});
+    fetch('events/update', { credentials: 'include' })
+      .then(response => {
+        this.setState({eventsCount: 0});
+      })
   }
   componentDidMount() {
-    console.log('MainNav componentDidMount');
     this.updateEventCount();
   }
 
@@ -27,7 +29,7 @@ class MainNav extends Component {
       .then(response => response.json())
       .then(response => {
         this.setState({eventsCount: response});
-        setTimeout(this.updateEventCount.bind(this), 10000);
+        setTimeout(this.updateEventCount.bind(this), 5000);
     });
   }
 
