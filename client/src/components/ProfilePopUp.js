@@ -1,14 +1,31 @@
 import React, { Component } from 'react';
-import { Popup, Image, Button, Card, Icon } from 'semantic-ui-react';
-
+import { Popup, Image, Button, Card, Icon, Rating } from 'semantic-ui-react';
+var moment = require('moment');
 
 class ProfilePopUp extends Component {
   constructor (props) {
     super(props);
+
+    this.state = {
+      friendship: ''
+    };
+  
+    this.sendFriendRequest = this.sendFriendRequest.bind(this);
+    this.fetchFriendshipStatus = this.fetchFriendshipStatus.bind(this);
+  }
+
+  fetchFriendshipStatus () {
+    
+  }
+
+  sendFriendRequest() {
+
   }
 
   render () {
-    console.log(this.props);
+    var images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
+    var randomPic = '/' + images[Math.floor(Math.random() * images.length)];    
+    console.log('Profile Props:::::::::', this.props);
 
     return (
       <Popup
@@ -17,25 +34,28 @@ class ProfilePopUp extends Component {
         position={this.props.position || 'top left'}
       >
         <Card>
-          <Image floated='right' size='mini' src={this.props.user.picture} />
           <Card.Content>
+            <Image floated='right' size='mini' src={this.props.owner.picture || randomPic} />
             <Card.Header>
-              {this.props.user.name}
+              {this.props.owner.name}
             </Card.Header>
             <Card.Meta>
               <span className='date'>
-                Joined in 2015
+                Join on {moment(this.props.owner.created).format('YYYY')} <Icon name={this.props.owner.gender}/> {this.props.owner.age}
               </span>
             </Card.Meta>
             <Card.Description>
-              Matthew is a musician living in Nashville.
+              <Rating icon='star' defaultRating={this.props.owner.rating} maxRating={5} disabled/>
             </Card.Description>
           </Card.Content>
           <Card.Content extra>
             <a>
-              <Icon name='user' />
+              <Icon name='owner' />
               22 Friends
             </a>
+            {this.props.user && <Button disabled={this.state.requestSent || listing.status !== null || user.id === listing.ownerId} primary onClick={this.sendFriendRequest}>
+              { this.state.requestSent || listing.status ? 'Pending' : 'Send Friend Request' } <Icon name='right chevron' />
+            </Button>}
           </Card.Content>
         </Card>
       </Popup>

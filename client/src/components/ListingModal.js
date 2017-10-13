@@ -84,7 +84,7 @@ class ListingModal extends Component {
         
         <Modal.Content image scrolling>
 
-          <ProfilePopUp user={this.props.owner} on='hover' position='top left' component={<Image size='small' src={ownerImage} wrapped shape='circular'/>} />
+          <ProfilePopUp user={this.props.user} owner={this.props.owner} on='hover' position='top left' component={<Image size='small' src={ownerImage} wrapped shape='circular'/>} />
 
           <Modal.Description>
             <Header>{listing.name}</Header>

@@ -32,6 +32,7 @@ CREATE TABLE friendship (
   id INT NOT NULL AUTO_INCREMENT,
   userId INT NOT NULL,
   friendId INT NOT NULL,
+  status ENUM('pending', 'accept', 'reject') DEFAULT 'pending',
   PRIMARY KEY (id, userId, friendId),
   FOREIGN KEY (userId) REFERENCES users(id),
   FOREIGN KEY (friendId) REFERENCES users(id)
