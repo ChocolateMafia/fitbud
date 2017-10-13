@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Popup, Image, Button} from 'semantic-ui-react';
+import { Popup, Image, Button, Card, Icon } from 'semantic-ui-react';
 
 
 class ProfilePopUp extends Component {
@@ -8,20 +8,36 @@ class ProfilePopUp extends Component {
   }
 
   render () {
-    console.log(this.props.children);
-
-    console.log('hello world');
-    var images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
-    var randomPic = '/' + images[Math.floor(Math.random() * images.length)];
+    console.log(this.props);
 
     return (
-
       <Popup
-        trigger={this.props.trigger}
-        on={this.props.on}
-        position='top left'
+        trigger={this.props.component}
+        on={this.props.on || 'hover'}
+        position={this.props.position || 'top left'}
       >
-        <h1>Hello World</h1>
+        <Card>
+          <Image floated='right' size='mini' src={this.props.user.picture} />
+          <Card.Content>
+            <Card.Header>
+              {this.props.user.name}
+            </Card.Header>
+            <Card.Meta>
+              <span className='date'>
+                Joined in 2015
+              </span>
+            </Card.Meta>
+            <Card.Description>
+              Matthew is a musician living in Nashville.
+            </Card.Description>
+          </Card.Content>
+          <Card.Content extra>
+            <a>
+              <Icon name='user' />
+              22 Friends
+            </a>
+          </Card.Content>
+        </Card>
       </Popup>
     );
   }

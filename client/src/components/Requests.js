@@ -68,7 +68,7 @@ class Requests extends Component {
           <ListingModal listing={selectedListing} open={this.state.showModal} 
                         hideListingModal={this.hideListingModal} 
                         user={this.props.user}
-                        userImage={selectedListing.picture ? selectedListing.picture : '/' + this.images[Math.floor(Math.random() * this.images.length)]} />
+                        ownerImage={selectedListing.picture ? selectedListing.picture : '/' + this.images[Math.floor(Math.random() * this.images.length)]} />
         )}
       </Container>]
     )
