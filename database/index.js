@@ -1,6 +1,6 @@
 var mysql = require('mysql');
 var bcrypt = require('bcrypt');
-var Promise = require("bluebird");
+var Promise = require('bluebird');
 
 var connection = mysql.createConnection({
   host: process.env.DBSERVER || 'localhost',
@@ -33,6 +33,18 @@ var createUser = function(userObj, callback) {
       });
     });
   });
+};
+
+var updateUser = function(userId, profileObj, callback) {
+  var query = 'UPDATE users SET ? WHERE id = ?';
+  connection.query(query, [profileObj, userId], function(err, result) {
+    if (err) {
+      console.error(error);
+      callback(err, null);
+    } else {
+      callback(null, result);
+    }    
+  });  
 };
 
 var checkUser = function(username, callback) {
@@ -155,7 +167,7 @@ var getMessages = function(postingId, callback) {
 
 // send back user requests (accepts and pendings) by postings id 
 var getUserPostings = function(userId, callback) {
-  var query = 'select postings.*, users.name AS name From postings JOIN users on (postings.userId = users.id) WHERE postings.userId = ?'
+  var query = 'select postings.*, users.name AS name From postings JOIN users on (postings.userId = users.id) WHERE postings.userId = ?';
   //var query = 'select * from postings where userId=?';
   // var query = 'select p.location, p.date, p.duration, p.details from postings p where userId=?'
   connection.query(query, [userId], (err, result) => {
@@ -392,6 +404,7 @@ var updateRequest = function(requestObj, callback) {
 
 module.exports = {
   checkUser,
+  updateUser,
   comparePassword,
   createUser,
   getWorkouts,

@@ -1,8 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../database/index.js');
-
-
+var bcrypt = require('bcrypt');
 
 router.get('/', (req, res) => {
   // res.send('RENDER profile page');
@@ -15,20 +14,41 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-
-  //console.log('user from request', req.session.passport.user);
-  var id = req.session.passport.user;
+  var userId = req.session.passport.user;
   var profileObj = {
+    name: req.body.name,
+    email: req.body.username,
     gender: req.body.gender,
-    activity: req.body.activity,
-    userId: id
+    age: parseInt(req.body.age, 10)
   };
-  
-  db.createProfile(profileObj, (result) => {
-    //console.log('created profile');
-    
-    res.redirect('/postings');
-  });
+
+  console.log(userId);
+  console.log(profileObj);
+
+  if (req.body.password) {
+    bcrypt.genSalt(10, function(err, salt) {
+      bcrypt.hash(req.body.password, salt, (err, hash) => {
+        profileObj.password = hash;
+        db.updateUser(userId, profileObj, (err, result) => {
+          console.log(result);
+          if (err) {
+            res.status(400).send();
+          } else {
+            res.json(result);
+          }
+        });
+      });
+    });
+  } else {
+    db.updateUser(userId, profileObj, (err, result) => {
+      console.log(result);
+      if (err) {
+        res.status(400).send();
+      } else {
+        res.json(result);
+      }
+    });
+  }
 });
 
 module.exports = router;
