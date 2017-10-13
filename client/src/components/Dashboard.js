@@ -13,7 +13,7 @@ class Dashboard extends Component {
     super(props);
 
     this.state = {
-      view: 'my workouts',
+      view: props.view,
       data: [],
       var: true
     };

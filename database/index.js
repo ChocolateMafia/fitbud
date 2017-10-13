@@ -320,7 +320,7 @@ var createEvent = function(requestObj, callback) {
     .then((result) => {
       title = result.length === 0 ? 'unknown workout' : result[0].title;
       description += ' ' + title;
-      return getRecipientsForEvent(requestObj.author, requestObj.objectId, requestObj.postingId, requestObj.type, requestObj.status)
+      return getRecipientsForEvent(requestObj.author, requestObj.objectId, requestObj.postingId, requestObj.type, requestObj.status);
     })
     .then((result) => {
       var recipients = result.reduce((acc, object) => {

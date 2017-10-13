@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import LoginButtonModal from './LoginButtonModal.js';
-import { Menu, Input, Button, Dropdown } from 'semantic-ui-react';
+import { Menu, Input, Button, Label, Dropdown } from 'semantic-ui-react';
 import { NavLink, Link, Redirect } from 'react-router-dom';
 
 class MainNav extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      eventsCount: 0
+    };
   }
 
   signOutRedirect = () => {}
@@ -17,6 +19,14 @@ class MainNav extends Component {
       <Menu secondary size='huge' style={{marginBottom: 0}}>
         <Menu.Item exact name='home' as={NavLink} to='/' />
         <Menu.Item name='listings' as={NavLink} to='/listings' />
+        {(this.props.isAuthed) && (this.state.eventsCount > 0) && (
+          <Menu.Item name='events' as={NavLink} to='/dashboard'>
+            Events <Label color='teal'>{this.state.eventsCount}</Label>
+          </Menu.Item>)}
+        {(this.props.isAuthed) && (this.state.eventsCount === 0)  && (
+          <Menu.Item name='events' as={NavLink} to='/dashboardEvents'>
+            Events
+           </Menu.Item>)}
         <Menu.Item name='about' as={NavLink} to='/about' />
         <Menu.Menu position='right'>
           <Menu.Item>
