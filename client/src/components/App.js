@@ -100,7 +100,11 @@ class App extends Component {
             <Route exact path='/signup' component={Signup} />
 
             <Route exact path='/dashboard' render={props => (
-              <Dashboard listings={data} user={this.state.user} {...props} />
+              <Dashboard listings={data} view='my workouts' user={this.state.user} {...props} />
+            )} />
+
+            <Route exact path='/dashboardEvents' render={props => (
+              <Dashboard listings={data} user={this.state.user} view='events' {...props} />
             )} />
 
             <Route exact path='/create' render={props => (
