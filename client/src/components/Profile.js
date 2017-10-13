@@ -22,6 +22,36 @@ class Profile extends Component {
 
   onValidSubmit (formData) {
     console.log(formData);
+
+    var options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify(formData)
+    };
+
+    fetch('/profile', options)
+      .then(response => {
+        if (response.ok) {
+          this.setState({
+            successHeader: 'Profile Update Success',
+            formSuccess: true,
+            formError: null,            
+            submit: false
+          });
+          this.props.handleProfileUpdate();
+        } else {
+          this.setState({
+            errorHeader: 'Profile Update Failed',
+            errorContent: 'Please Contact Customer Service',
+            formError: true,
+            formSuccess: null,            
+            submit: false
+          });
+        }
+      });
   }
 
   render() {
@@ -66,6 +96,7 @@ class Profile extends Component {
                 <Form
                   size='large'
                   error={this.state.formError}
+                  success={this.state.formSuccess}
                   noValidate
                   onValidSubmit={this.onValidSubmit}
                 >         
@@ -171,6 +202,12 @@ class Profile extends Component {
                     error 
                     header={this.state.errorHeader}
                     content={this.state.errorContent}
+                  />
+
+                  <Message 
+                    success 
+                    header={this.state.successHeader}
+                    content={this.state.successContent}
                   />
               
                 </Form>

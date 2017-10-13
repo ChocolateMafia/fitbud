@@ -21,14 +21,19 @@ class App extends Component {
       authenticated: false,
       user: null,
       visible: null,
-    }
+    };
+
+    this.handleAuthenticated = this.handleAuthenticated.bind(this);
+    this.handleSignOff = this.handleSignOff.bind(this);
+    this.checkAuth = this.checkAuth.bind(this);
+    this.handleProfileUpdate = this.handleProfileUpdate.bind(this);
 
     this.cookies = new Cookies();
     console.log('checking auth...');
     this.checkAuth();
   }
   
-  checkAuth = () => {
+  checkAuth () {
     fetch('/profile', {
       credentials: 'include'
     }).then(response => {
@@ -40,12 +45,16 @@ class App extends Component {
         this.setState({
           user: user,
           authenticated: true
-        })
+        });
       }
-    })
+    });
   }
 
-  handleAuthenticated = (user) => {
+  handleProfileUpdate () {
+    this.checkAuth();
+  }
+
+  handleAuthenticated (user) {
     this.setState({
       authenticated: true,
       user: user
@@ -53,7 +62,7 @@ class App extends Component {
     console.log('User authenticated...');
   }
 
-  handleSignOff = () => {
+  handleSignOff () {
     this.setState({
       authenticated: false,
       user: null
@@ -67,8 +76,12 @@ class App extends Component {
     return (
       <Router>
         <div>
-          <MainNav authenticate={this.handleAuthenticated} isAuthed={this.state.authenticated} 
-                   signoff={this.handleSignOff} user={this.state.user} />
+          <MainNav 
+            authenticate={this.handleAuthenticated} 
+            isAuthed={this.state.authenticated} 
+            signoff={this.handleSignOff} 
+            user={this.state.user} 
+          />
           <Switch>
             <Route exact path='/' render={props => (
               <Home user={this.state.user} visible={this.state.visible} {...props} />
@@ -95,7 +108,7 @@ class App extends Component {
             )} />
 
             <Route exact path='/profile' render={props => (
-              <Profile user={this.state.user} {...props} />
+              <Profile user={this.state.user} handleProfileUpdate={this.handleProfileUpdate} {...props} />
             )} />
 
             <Route component={NoMatch} />
