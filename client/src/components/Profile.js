@@ -20,8 +20,8 @@ class Profile extends Component {
     });
   }  
 
-  onValidSubmit () {
-
+  onValidSubmit (formData) {
+    console.log(formData);
   }
 
   render() {
@@ -31,6 +31,10 @@ class Profile extends Component {
 
     const errorLabel = <Label color="red" pointing/>;
 
+    const options = [
+      { key: 'm', text: 'Male', value: 'male' },
+      { key: 'f', text: 'Female', value: 'female' },
+    ];
 
     return (
       <Container style={{margin: '20px'}}>
@@ -56,11 +60,9 @@ class Profile extends Component {
           >
             <Grid.Column style={{ maxWidth: 1000 }}>
               <Header as='h2' color='teal' textAlign='center'>
-                Update your profile
+                Update Your Profile
               </Header>
-
               <Segment textAlign='left'>
-
                 <Form
                   size='large'
                   error={this.state.formError}
@@ -132,21 +134,38 @@ class Profile extends Component {
                     />                                  
                   </Form.Group>
 
-                  <Form.Input 
-                    label='Age'
-                    name='age'
-                    placeholder={this.props.user.age}
-                    type='text'
-                    labelPosition='left'
-                    icon="info"
-                    iconPosition="left"  
-                    validations="isNumeric"
-                    validationErrors={{
-                      isEmail: 'Age must be a number'
-                    }}
-                    errorLabel={ errorLabel }                     
-                  />
+                  <Form.Group widths='equal'>
+                    <Form.Input 
+                      label='Age'
+                      name='age'
+                      placeholder={this.props.user.age}
+                      type='text'
+                      labelPosition='left'
+                      icon="info"
+                      iconPosition="left"  
+                      validations="isNumeric"
+                      validationErrors={{
+                        isEmail: 'Age must be a number'
+                      }}
+                      errorLabel={ errorLabel }                     
+                    />
 
+                    <Form.Select 
+                      label='Gender'
+                      name='gender'
+                      placeholder='Gender'
+                      options={options} 
+                    />
+                  </Form.Group>
+                
+                  <Form.Button
+                    loading={this.state.submit}
+                    color='teal'
+                    size='large'
+                    fluid
+                  >
+                    Submit
+                  </Form.Button>
 
                   <Message 
                     error 
@@ -155,9 +174,7 @@ class Profile extends Component {
                   />
               
                 </Form>
-              
               </Segment>
-
             </Grid.Column>
           </Grid>
         </Container>
