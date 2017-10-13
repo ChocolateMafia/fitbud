@@ -11,7 +11,8 @@ class Listings extends Component {
       visible: false,
       listings: [],
       showModal: false,
-      selectedListing: null
+      selectedListing: null,
+      owner: {}
     };
 
     this.updateListings = this.updateListings.bind(this);
@@ -46,7 +47,7 @@ class Listings extends Component {
   }
 
   showListingModal(listing) {
-    this.fetchOwnerData(listing.ownerId);
+    this.fetchOwnerData(listing.userId);
     this.setState({
       showModal: true,
       selectedListing: listing

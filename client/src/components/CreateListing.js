@@ -89,14 +89,12 @@ class CreateListing extends Component {
         required
         validations={{
           minLength: 8,
-          maxLength: 50,
-          isWords: true
+          maxLength: 50
         }}
         validationErrors={{
           minLength: 'Minimum of 8 characters',
           maxLength: 'Maximum of 50 characters',
-          isDefaultRequiredValue: 'Title is required',
-          isWords: 'Only letters allowed for title'
+          isDefaultRequiredValue: 'Title is required'
         }}
         errorLabel={ <Label basic color='red' pointing /> }
       />
@@ -110,12 +108,9 @@ class CreateListing extends Component {
         icon="map"
         iconPosition="left"
         required
-        validations={{
-          isWords: true
-        }}
+        validations={{}}
         validationErrors={{
-          isDefaultRequiredValue: 'Location is required',
-          isWords: 'Only letters allowed for location'
+          isDefaultRequiredValue: 'Location is required'
         }}
         errorLabel={ <Label basic color='red' pointing /> }
       />
@@ -129,12 +124,9 @@ class CreateListing extends Component {
         icon="point"
         iconPosition="left"
         required
-        validations={{
-          isWords: true
-        }}
+        validations={{}}
         validationErrors={{
           isDefaultRequiredValue: 'Meeting point is required',
-          isWords: 'Only words allowed for meeting point'
         }}
         errorLabel={ <Label basic color='red' pointing /> }
       />

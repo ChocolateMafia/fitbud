@@ -63,7 +63,7 @@ class Workouts extends Component {
           <ListingModal listing={selectedListing} open={this.state.showModal} 
                         hideListingModal={this.hideListingModal} 
                         user={this.props.user}
-                        userImage={this.props.user.picture || userPic} />
+                        ownerImage={this.props.user.picture || userPic} />
         )}
       </Container>]
     )

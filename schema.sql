@@ -24,6 +24,7 @@ CREATE TABLE users (
   age INT,
   rating float(2,1),
   r_count INT DEFAULT 0,
+  created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  
   PRIMARY KEY (id)
 );
 
