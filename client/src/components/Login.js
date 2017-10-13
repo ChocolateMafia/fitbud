@@ -88,7 +88,7 @@ class Login extends Component {
           uid: result.user.uid,
           token: result.credential.accessToken,
           name: result.user.displayName,
-          username: result.user.email,
+          username: result.user.email || 'abc@abc.com',
           password: 'workoutbuddy',
           gender: result.additionalUserInfo.profile.gender || null,
           picture: result.user.photoURL || null

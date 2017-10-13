@@ -28,7 +28,7 @@ class Requests extends Component {
   }
 
   showListingModal(listing) {
-    //console.log(listing);
+    console.log(listing);
     this.setState({
       showModal: true,
       selectedListing: listing
@@ -53,7 +53,7 @@ class Requests extends Component {
             {this.state.requests.map(listing => (
               <Card key={listing.id} onClick={() =>this.showListingModal(listing)}>
                 <Card.Content>
-                  <Image src={'/' + this.images[Math.floor(Math.random() * this.images.length)]} size='mini' floated='left'/>
+                  <Image src={listing.picture? listing.picture: '/' + this.images[Math.floor(Math.random() * this.images.length)]} size='mini' floated='left'/>
                   <Card.Header>{listing.activity}</Card.Header>
                   <Card.Meta>{listing.location}</Card.Meta>
                   <Card.Description>{`Schedule on ${listing.date} for ${listing.duration} hours`}</Card.Description>
@@ -68,7 +68,7 @@ class Requests extends Component {
           <ListingModal listing={selectedListing} open={this.state.showModal} 
                         hideListingModal={this.hideListingModal} 
                         user={this.props.user}
-                        userImage={'/' + this.images[Math.floor(Math.random() * this.images.length)]} />
+                        userImage={selectedListing.picture ? selectedListing.picture : '/' + this.images[Math.floor(Math.random() * this.images.length)]} />
         )}
       </Container>]
     )

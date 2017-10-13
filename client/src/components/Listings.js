@@ -52,6 +52,7 @@ class Listings extends Component {
   render() {
     var { listings, showModal, selectedListing } = this.state;
     console.log(this.props);
+    var randomPic='/' + this.images[Math.floor(Math.random() * this.images.length)];
     // console.log(this.images);
 
     return (
@@ -61,7 +62,7 @@ class Listings extends Component {
             {listings.map(listing => (
 
               <ListingCard key={listing.id} listing={listing} showListingModal={this.showListingModal.bind(this)}
-                           user={'/' + this.images[Math.floor(Math.random() * this.images.length)]} 
+                           userPic={listing.picture? listing.picture : ('/' + this.images[Math.floor(Math.random() * this.images.length)])} 
               />
 
             ))}
@@ -73,7 +74,7 @@ class Listings extends Component {
           <ListingModal listing={selectedListing} open={this.state.showModal} 
                         hideListingModal={this.hideListingModal} 
                         user={this.props.user}
-                        userImage={'/' + this.images[Math.floor(Math.random() * this.images.length)]}  />
+                        userImage={selectedListing.picture ? selectedListing.picture : randomPic}  />
         )}
       </Container>]
     )

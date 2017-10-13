@@ -76,7 +76,7 @@ var findById = function(id, callback) {
 
 var getWorkouts = function(id, callback) {
   var query = 'select posting.*, requests.status, (posting.buddies - 1) as modified_buddies \
-               from (select users.name, users.id as ownerId, postings.* from postings inner join users on postings.userId=users.id) as posting \
+               from (select users.name, users.id as ownerId, users.picture, postings.* from postings inner join users on postings.userId=users.id) as posting \
                left outer join requests \
                on requests.postingId=posting.id \
                AND requests.userId=?';
@@ -155,8 +155,8 @@ var getMessages = function(postingId, callback) {
 
 // send back user requests (accepts and pendings) by postings id 
 var getUserPostings = function(userId, callback) {
-  
-  var query = 'select * from postings where userId=?';
+  var query = 'select postings.*, users.name AS name From postings JOIN users on (postings.userId = users.id) WHERE postings.userId = ?'
+  //var query = 'select * from postings where userId=?';
   // var query = 'select p.location, p.date, p.duration, p.details from postings p where userId=?'
   connection.query(query, [userId], (err, result) => {
     if (err) {
@@ -183,7 +183,13 @@ var getRequestsByPostingId = function(postingId, callback) {
 
 var getUserRequestPostings = function(userId, callback) {
 //title, loation, date, duration
-  var query = 'select p.location, p.date, p.duration, p.details, p.id from requests r left join postings p on r.postingId = p.id where r.status = "pending" and r.userId = ?';
+  var query = 'SELECT p.*, u.name, u.picture \
+              FROM postings p \
+              INNER JOIN users u on p.userId= u.id \
+              INNER JOIN requests r ON r.postingId=p.id \
+              WHERE r.status = "pending" and r.userId = ?';
+  // var query = 'select p.title, p.meetup_spot, p.location, p.date, p.duration, p.details, p.id, p.userId \
+  //             from requests r left join postings p on r.postingId = p.id where r.status = "pending" and r.userId = ?';
   connection.query(query, [userId], (err, result) => {
     if (err) {
       console.error('error getting requests by userId');
