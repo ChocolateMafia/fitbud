@@ -22,7 +22,7 @@ class ListingCard extends Component {
           </Card.Content>
         </Card.Content>
       </Card>
-    )
+    );
   }
 
 }
