@@ -28,4 +28,17 @@ router.get('/count', (req, res) => {
   });
 });
 
+router.get('/update', (req, res) => {
+  var id = req.user ? req.user.id : null;
+
+  db.updateEventsStatus(id, (error, result) => {
+    if (error) {
+      console.error(error);
+      res.status(200).json(0);
+    } else {
+      res.status(200).json(result);
+    }
+  });
+});
+
 module.exports = router;

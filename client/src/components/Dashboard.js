@@ -22,7 +22,7 @@ class Dashboard extends Component {
     this.update = this.update.bind(this);
     this.dataPull = this.dataPull.bind(this);
   }
-
+  
   dataPull() {
     fetch('/dashboard', { credentials: 'include' })
       .then(response => response.json())
