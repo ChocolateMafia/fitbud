@@ -354,12 +354,24 @@ var createEvent = function(requestObj, callback) {
 };
 
 var getEvents = function(userId, callback) {
-  var query = `SELECT * FROM events WHERE recipient=${userId}`;
+  var query = `SELECT * FROM events WHERE recipient=${userId} AND new=1`;
   connection.query(query, (error, result) => {
     if (error) {
       callback(error, null);
     } else {
       callback(null, result);
+    }
+  });
+};
+
+var getEventsCount = function(userId, callback) {
+  var query = `SELECT COUNT(id) FROM events WHERE recipient=${userId}`;
+  connection.query(query, (error, result) => {
+    if (error) {
+      callback(error, null);
+    } else {
+      var count = result.length > 0 ? count = result[0]['COUNT(id)'] : count = 0;
+      callback(null, count);
     }
   });
 };
@@ -417,6 +429,7 @@ module.exports = {
   createRequest,
   createEvent,
   getEvents,
+  getEventsCount,
   createPair,
   getUserAcceptPostings,
   getRequestsByPostingId,

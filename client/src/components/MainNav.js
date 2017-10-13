@@ -10,21 +10,41 @@ class MainNav extends Component {
     this.state = {
       eventsCount: 0
     };
+
+    this.handleLoginClick = this.handleLoginClick.bind(this);
+  }
+
+  handleLoginClick() {
+    this.setState({eventsCount: 0});
+  }
+  componentDidMount() {
+    console.log('MainNav componentDidMount');
+    this.updateEventCount();
+  }
+
+  updateEventCount() {
+    fetch('/events/count', { credentials: 'include' })
+      .then(response => response.json())
+      .then(response => {
+        this.setState({eventsCount: response});
+        setTimeout(this.updateEventCount.bind(this), 10000);
+    });
   }
 
   signOutRedirect = () => {}
 
   render() {
+    console.log('MainNav render');
     return (
       <Menu secondary size='huge' style={{marginBottom: 0}}>
         <Menu.Item exact name='home' as={NavLink} to='/' />
         <Menu.Item name='listings' as={NavLink} to='/listings' />
         {(this.props.isAuthed) && (this.state.eventsCount > 0) && (
-          <Menu.Item name='events' as={NavLink} to='/dashboard'>
+          <Menu.Item name='events' onClick={this.handleLoginClick} as={NavLink} to='/dashboardEvents'>
             Events <Label color='teal'>{this.state.eventsCount}</Label>
           </Menu.Item>)}
         {(this.props.isAuthed) && (this.state.eventsCount === 0)  && (
-          <Menu.Item name='events' as={NavLink} to='/dashboardEvents'>
+          <Menu.Item name='events' onClick={this.handleLoginClick} as={NavLink} to='/dashboardEvents'>
             Events
            </Menu.Item>)}
         <Menu.Item name='about' as={NavLink} to='/about' />
