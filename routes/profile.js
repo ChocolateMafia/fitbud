@@ -4,13 +4,7 @@ var db = require('../database/index.js');
 var bcrypt = require('bcrypt');
 
 router.get('/', (req, res) => {
-  // res.send('RENDER profile page');
-  console.log('user profile', req.user);
-  if (req.user) {
-    res.json(req.user);
-  } else {
-    res.json({});
-  }
+
 });
 
 router.post('/', (req, res) => {

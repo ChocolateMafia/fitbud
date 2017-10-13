@@ -84,6 +84,7 @@ app.use('/postings', routePostings);
 app.use('/events', routeEvents);
 app.use('/messages', routeMessages);
 app.use('/auth/facebook', routeFacebookAuth);
+//app.user('/user')
 
 app.use(checkAuth);
 

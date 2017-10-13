@@ -40,7 +40,7 @@ class App extends Component {
   }
   
   checkAuth () {
-    fetch('/profile', {
+    fetch('/login', {
       credentials: 'include'
     }).then(response => {
       console.log(response);
