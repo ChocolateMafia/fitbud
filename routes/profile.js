@@ -5,6 +5,13 @@ var bcrypt = require('bcrypt');
 
 router.get('/:ownerId', (req, res) => {
   db.findById(req.params.ownerId, (err, user) => {
+    if (user.id === req.user) {
+      user.friendship = false;
+    } else {
+      
+    }
+
+
     err ? res.status(400).json() : res.json(user);
   });
 });

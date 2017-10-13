@@ -73,6 +73,47 @@ var checkUser = function(username, callback) {
   });
 };
 
+var addFriendRequest = function (userId, friendId, callback) {
+  var query = 'INSERT INTO friendship SET ?';
+  connection.query(query, {userId, friendId}, function(err, result) {
+    if (err) {
+      console.error('error inserting friendship');
+      callback(err, null);
+    } else {
+      callback(null, result);
+    }
+  });
+};
+
+var getFriendshipStatus = function(userId, friendId, callback) {
+  var query = 'SELECT * from friendship WHERE (userId = ? AND friendId = ?) OR (userId = ? AND friendId = ?)';
+
+  connection.query(query, [userId, friendId, friendId, userId], function(err, result) {
+    if (err) {
+      console.error('error when finding friendship', err);
+    } else {
+      if (dbUserResult.length === 0) {
+        callback(err, null);
+      } else {
+        callback(null, result);
+      }
+    }
+  });
+};
+
+var updateFriendshipStatus = function (status, userId, friendId, callback) {
+  var query = 'UPDATE friendship SET status = ? WHERE (userId = ? AND friendId = ?) OR (userId = ? AND friendId = ?)';
+
+  connection.query(query, [status, userId, friendId, friendId, userId], function(err, result) {
+    if (err) {
+      console.error(error);
+      callback(err, null);
+    } else {
+      callback(null, result);
+    }  
+  });
+};
+
 var comparePassword = function(passwordEntered, hash, callback) {
   console.log('inside compare password');
   bcrypt.compare(passwordEntered, hash, function(err, isMatch) {
