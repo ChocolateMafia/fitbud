@@ -400,8 +400,12 @@ var createPair = function(requestObj, callback) {
 };
 
 var getUserAcceptPostings = function(userId, callback) {
-  var query = 'select p.location, p.date, p.duration, p.details from requests r left join postings p on r.postingId = p.id where r.UserId = ? and r.status = ?';
-  connection.query(query, [userId, 'accept'], (err, result) => {
+  var query = `SELECT p.location, p.date, p.duration, p.details, p.meetup_spot
+    FROM requests r LEFT JOIN postings p ON r.postingId = p.id WHERE r.UserId = ? and r.status = ?
+    UNION
+    SELECT location, date, duration, details, meetup_spot
+    FROM postings WHERE UserId = ?`;
+  connection.query(query, [userId, 'accept', userId], (err, result) => {
     if (err) {
       console.error('error getting accepted requests');
     } else {

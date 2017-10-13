@@ -80,7 +80,7 @@ class Dashboard extends Component {
 
         {this.state.view === 'my workouts' && (<Workouts key='workouts' data={this.state.data} user={this.props.user} update={this.update} dataPull={this.dataPull} />)}
         {this.state.view === 'my requests' && ([<Requests key='requests' user={this.props.user}/>])}
-        {this.state.view === 'upcoming workouts' && ([<Invites key='invites'/>])}
+        {this.state.view === 'upcoming workouts' && ([<Invites key='invites' user={this.props.user}/>])}
         {this.state.view === 'events' && ([<Events key='events'/>])}
 
       </Container>
