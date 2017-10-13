@@ -43,16 +43,16 @@ class Workouts extends Component {
         <Container style={{marginTop: '20px'}}>
           <Card.Group itemsPerRow={3}>
             {this.props.data.map(listing => (
-              <Card key={listing.id} onClick={() =>this.showListingModal(listing)}>
-                <Card.Content>
+              <Card key={listing.id}>
+                <Card.Content onClick={() =>this.showListingModal(listing)}>
                   <Image src={this.props.user.picture || userPic} size='mini' floated='left'/>
                   <Card.Header>{listing.title}</Card.Header>
                   <Card.Meta>{listing.location}</Card.Meta>
                   <Card.Description>{`${listing.details} on ${listing.date} for ${listing.duration} hour(s)`}</Card.Description>
-                  <Card.Content extra>
+                </Card.Content>
+                <Card.Content extra>
                     <WorkoutDropdown postingId={listing.id} buddies={listing.buddies} update={this.props.update} dataPull={this.props.dataPull} />
                   </Card.Content>
-                </Card.Content>
               </Card>
             ))}
           </Card.Group>

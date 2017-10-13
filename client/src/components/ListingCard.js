@@ -13,7 +13,7 @@ class ListingCard extends Component {
     return (
       <Card onClick={() => showListingModal(listing)} link>
         <Card.Content>
-          <Image src={this.props.user} size='mini' floated='right'/>
+          <Image src={this.props.userPic} size='mini' floated='right'/>
           <Card.Header>{listing.title}</Card.Header>
           <Card.Meta>{listing.name}</Card.Meta>
           <Card.Description>{`Schedule on ${new Date(listing.date).toDateString()} for ${listing.duration} hours`}</Card.Description>
