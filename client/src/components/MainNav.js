@@ -36,7 +36,6 @@ class MainNav extends Component {
   signOutRedirect = () => {}
 
   render() {
-    console.log('MainNav render');
     return (
       <Menu secondary size='huge' style={{marginBottom: 0}}>
         <Menu.Item exact name='home' as={NavLink} to='/' />

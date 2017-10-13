@@ -60,6 +60,7 @@ class Invites extends Component {
                 <Card.Content onClick={() =>this.showListingModal(listing)}>
                   <Image src={this.props.user.picture || userPic} size='mini' floated='left'/>
                   <Card.Header>{listing.title}</Card.Header>
+                  <Card.Meta>{listing.name}</Card.Meta>
                   <Card.Meta>{listing.location}</Card.Meta>
                   <Card.Description>{`${listing.details} on ${new Date(listing.date).toDateString()} for ${listing.duration} hour(s)`}</Card.Description>
                 </Card.Content>

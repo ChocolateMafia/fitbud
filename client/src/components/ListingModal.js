@@ -71,7 +71,6 @@ class ListingModal extends Component {
   }
   render() {
     var { listing, open, hideListingModal, userImage, user, messages} = this.props;
-    //console.log('listing modal user', user);
 
     return (
       <Modal open={open} onClose={hideListingModal} closeIcon dimmer='blurring'>
@@ -124,10 +123,14 @@ class ListingModal extends Component {
           <Button secondary onClick={hideListingModal}>
             Close<Icon name='close' />
           </Button>
-          {user && <Button disabled={this.state.requestSent || listing.status !== null || user.id === listing.ownerId} primary onClick={this.sendRequest}>
-            { this.state.requestSent || listing.status ? 'Pending' : 'Request to join' } <Icon name='right chevron' />
+
+          {user && (user.id !== listing.ownerId) && (listing.status !== 'accept') && <Button disabled={this.state.requestSent || listing.status === 'pending'} primary onClick={this.sendRequest}>
+            { this.state.requestSent || listing.status === 'pending' ? 'Pending' : 'Request to join' } <Icon name='right chevron' />
           </Button>}
-          <Button  disabled={user === null} onClick={this.fetchChat}><Icon name="chat" /></Button>
+          {user && (user.id !== listing.ownerId) && (listing.status === 'accept') && <Button style={{background: '#21ba45'}} disabled={true} primary>
+            Accepted!
+          </Button>}
+          <Button disabled={user === null} onClick={this.fetchChat}><Icon name="chat" /></Button>
         </Modal.Actions>
       </Modal>
     )
