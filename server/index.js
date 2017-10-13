@@ -10,6 +10,19 @@ var db = require('../database/index.js');
 var flash = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
+var Pusher = require('pusher');
+
+var pusher = new Pusher({
+  appId: '414562',
+  key: '7f1979bc2b65ed9a895f',
+  secret: '61950201d0e83697ec9d',
+  cluster: 'us2',
+  encrypted: true  
+});
+
+// pusher.trigger('my-channel', 'my-event', {
+//   'message': 'hello world'
+// });
 
 console.log('db server', process.env.DBSERVER);
 console.log('db user', process.env.DBUSER);
