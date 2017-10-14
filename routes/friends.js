@@ -22,16 +22,8 @@ router.get('/:userId', (req, res) => {
     }, []);
 
 
-    console.log('$$$$$$$$$$$$$$$$$$$$$$$ FriendsIds', friendsIds);
-    console.log('$$$$$$$$$$$$$$$$$$$$$$$ RequestersIds', requestersIds);
-
-
     db.findByIds(friendsIds, (err, friends) => {
-      console.log('$$$$$$$$$$$$$$$$$$$$$$$ Friends', friends);
-
       db.findByIds(requestersIds, (err, requesters) => {
-        console.log('$$$$$$$$$$$$$$$$$$$$$$$ requesters', requesters);
-
         err ? res.status(400).send() : res.json({friends, requesters});
       });
     });
