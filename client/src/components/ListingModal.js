@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Modal, Header, Button, Image, Icon, Divider, Comment, Form} from 'semantic-ui-react';
 import Chat from './Chat';
 import ProfilePopUp from './ProfilePopUp';
+import Pusher from 'pusher-js';
+var pusherKey = '7f1979bc2b65ed9a895f';
+var eventsChannel = 'events';
 
 class ListingModal extends Component {
   constructor(props) {
@@ -13,6 +16,25 @@ class ListingModal extends Component {
       text: '',
       chatOpen: false
     }
+    //this.fetchChat = this.fetchChat.bind(this);
+  }
+
+  componentWillMount() {
+    this.pusher = new Pusher(pusherKey, {
+      cluster: 'us2',
+      encrypted: true
+    });
+    this.channel = this.pusher.subscribe(eventsChannel);
+  }
+
+  componentDidMount = () => {
+    this.fetchChat();
+    this.channel.bind('event', function(data) {
+      console.log('data', data);
+      if (this.state.chatOpen) {
+        this.fetchChat();
+      }
+    }, this);
   }
 
   sendRequest = () => {
@@ -42,6 +64,7 @@ class ListingModal extends Component {
       userId: this.props.user.id,
       postingId: this.props.listing.id
     };
+    this.setState({text: ''});
     var self = this;
     var options = {
       headers: {
@@ -115,7 +138,7 @@ class ListingModal extends Component {
                   />
                 )}
                 <Form reply>
-                  <Form.TextArea onChange={this.handleTextBox}/>
+                  <Form.TextArea onChange={this.handleTextBox} value={this.state.text}/>
                   <Button content='Add Reply' labelPosition='left' icon='edit' primary onClick={this.handleReply}/>
                 </Form>
               </Comment.Group>
