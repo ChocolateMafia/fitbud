@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Image, Transition, Container, Button, Icon, Rating } from 'semantic-ui-react';
+import { Card, Image, Transition, Container, Button, Icon, Rating, Divider } from 'semantic-ui-react';
 var moment = require('moment');
 
 class Friends extends Component {
@@ -37,7 +37,9 @@ class Friends extends Component {
     return (
       <Transition visible={this.state.visible} duration={1000} animation='fade'>
         <Container style={{marginTop: '20px'}}>
+          
           <Card.Group>
+            <Divider horizontal style={{marginTop: '20px', marginBottom: '10px'}}>New Friend Requests</Divider>
             {requesters.map(requester => (
               <Card>
                 <Card.Content>
@@ -61,6 +63,25 @@ class Friends extends Component {
               </Card>          
             ))}
           </Card.Group>
+          <Card.Group>
+            <Divider horizontal style={{marginTop: '20px', marginBottom: '10px'}}>Friends</Divider>
+            {friends.map(friend => (
+              <Card>
+                <Card.Content>
+                  <Image floated='right' size='mini' src={friend.picture || randomPic} />
+                  <Card.Header>
+                    {friend.name}
+                  </Card.Header>
+                  <Card.Meta>
+                    Join on {moment(friend.created).format('YYYY')} <Icon name={friend.gender}/> {friend.age}
+                  </Card.Meta>
+                  <Card.Description>
+                    <Rating icon='star' defaultRating={friend.rating} maxRating={5} disabled/>
+                  </Card.Description>
+                </Card.Content>
+              </Card>          
+            ))}
+          </Card.Group>          
         </Container>
       </Transition>
     );
