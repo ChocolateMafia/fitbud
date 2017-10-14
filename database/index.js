@@ -508,6 +508,18 @@ var updateRequest = function(requestObj, callback) {
   });
 };
 
+var getWorkoutMembers = function (postingId, callback) {
+  var query = 'SELECT userId FROM postings WHERE id = ? UNION SELECT userId FROM requests WHERE postingId = ? AND status = ?';
+
+  connection.query(query, [postingId, postingId, 'accept'], (err, results) => {
+    if (err) {
+      console.error('error when finding workout listing memebers', err);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
 //insert into postings (title, location, date, duration, details, meetup_spot, buddies, userId) values ('hike', 'sf', '2017-01-01 00:00:00', 1, 'hike in muir woods', 'parking', 2, 1);
 
 module.exports = {
@@ -537,7 +549,8 @@ module.exports = {
   addFriendRequest,
   updateFriendshipStatus,
   getFriendshipStatus,
-  getUserFriendships
+  getUserFriendships,
+  getWorkoutMembers
 };
 
 

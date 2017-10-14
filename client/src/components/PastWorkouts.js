@@ -16,6 +16,7 @@ class PastWorkouts extends Component {
     this.fetchOwnerData = this.fetchOwnerData.bind(this);
     this.showListingModal = this.showListingModal.bind(this);
     this.hideListingModal = this.hideListingModal.bind(this);
+    this.fetchMemberData = this.fetchMemberData.bind(this);
   }
 
   fetchOwnerData (ownerId, listing) {
@@ -31,7 +32,19 @@ class PastWorkouts extends Component {
       });
   }  
 
+  fetchMemberData (listingId) {
+    fetch('/postings/members/' + listingId, {credentials: 'include'})
+      .then(response => response.json())
+      .then(members => {
+        console.log('Members Data', members);
+        this.setState({
+          members
+        });        
+      });    
+  }
+
   showListingModal (listing) {
+    this.fetchMemberData(listing.id);
     this.fetchOwnerData(listing.userId, listing);
   }
 
@@ -93,6 +106,7 @@ class PastWorkouts extends Component {
             ownerImage={this.props.user.picture || userPic}
             owner={this.state.owner}
             showRequest={false}
+            members={this.state.members}
           />
         )}
       </Container>]
