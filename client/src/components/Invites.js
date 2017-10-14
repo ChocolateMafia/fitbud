@@ -11,7 +11,11 @@ class Invites extends Component {
       visible: false,
       showModal: false,
       selectedListing: null
-    }
+    };
+
+    this.fetchOwnerData = this.fetchOwnerData.bind(this);
+    this.showListingModal = this.showListingModal.bind(this);
+    this.hideListingModal = this.hideListingModal.bind(this);
   }
 
   fetchOwnerData (ownerId, listing) {
@@ -31,16 +35,16 @@ class Invites extends Component {
     this.fetchOwnerData(listing.userId, listing);
   }
 
-  hideListingModal = () => {
+  hideListingModal () {
     this.setState({
       showModal: false,
       selectedListing: null
-    })
+    });
   }
 
 
   componentDidMount() {
-    fetch('/dashboard/accepted', { credentials: "include" })
+    fetch('/dashboard/accepted', { credentials: 'include' })
       .then(response => response.json()
         .then(
           response => {
@@ -49,12 +53,10 @@ class Invites extends Component {
             console.log(response);
           }
         )
-      )
+      );
 
-    console.log('getting invites...')
+    console.log('getting invites...');
   }
-
-  images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
 
   render() {
     var { invites, showModal, selectedListing } = this.state;
@@ -81,14 +83,18 @@ class Invites extends Component {
       </Transition>,
       <Container>
         {this.state.showModal && (
-          <ListingModal listing={selectedListing} open={this.state.showModal} 
-                        hideListingModal={this.hideListingModal} 
-                        user={this.props.user}
-                        ownerImage={this.props.user.picture || userPic}
-                        owner={this.state.owner} />
+          <ListingModal 
+            listing={selectedListing} 
+            open={this.state.showModal} 
+            hideListingModal={this.hideListingModal} 
+            user={this.props.user}
+            ownerImage={this.props.user.picture || userPic}
+            owner={this.state.owner}
+            showRequest={false}
+          />
         )}
       </Container>]
-    )
+    );
   }
 
 

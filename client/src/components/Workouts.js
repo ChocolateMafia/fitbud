@@ -81,6 +81,7 @@ class Workouts extends Component {
             user={this.props.user}
             ownerImage={this.props.user.picture || userPic}
             owner={this.state.owner}
+            showRequest={false}
           />
         )}
       </Container>]

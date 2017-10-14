@@ -86,6 +86,7 @@ class Requests extends Component {
             user={this.props.user}
             ownerImage={selectedListing.picture ? selectedListing.picture : '/' + images[Math.floor(Math.random() * images.length)]} 
             owner={this.state.owner}
+            showRequest={false}
           />
         )}
       </Container>]

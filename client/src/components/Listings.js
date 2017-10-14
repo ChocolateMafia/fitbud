@@ -166,6 +166,7 @@ class Listings extends Component {
             user={this.props.user}
             ownerImage={selectedListing.picture ? selectedListing.picture : randomPic}
             owner={this.state.owner}
+            showRequest={true}
           />
         )}
       </Container>]
