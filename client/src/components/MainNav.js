@@ -14,6 +14,15 @@ class MainNav extends Component {
     this.props.handleEventsClick()
   }
 
+  updateEventCount() {
+    fetch('/events/count', { credentials: 'include' })
+      .then(response => response.json())
+      .then(response => {
+        this.setState({eventsCount: response});
+        setTimeout(this.updateEventCount.bind(this), 500000);
+      });
+  }
+
   signOutRedirect = () => {}
 
   render() {
