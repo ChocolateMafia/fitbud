@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Form, Container, Grid, Header, Image, Segment, Button, Message, Transition, Icon } from 'semantic-ui-react';
-import { Redirect, Link } from 'react-router-dom';
-import firebase from 'firebase';
+import { Form, Grid, Header, Segment, Button, Message, Transition, Icon } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import {facebookProvider, auth} from './../firebase/config';
 
 class Login extends Component {

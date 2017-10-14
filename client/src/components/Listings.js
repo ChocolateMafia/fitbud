@@ -36,12 +36,17 @@ class Listings extends Component {
       });
   }
 
-  fetchOwnerData (ownerId) {
+  fetchOwnerData (ownerId, listing) {
     fetch('/profile/' + ownerId, {credentials: 'include'})
       .then(response => response.json())
       .then(owner => {
         console.log('Owner Data', owner);
-        this.setState({owner});
+        //this.setState({owner});
+        this.setState({
+          owner,
+          showModal: true,
+          selectedListing: listing
+        });        
       });
   }
 
@@ -53,11 +58,7 @@ class Listings extends Component {
   }
 
   showListingModal(listing) {
-    this.fetchOwnerData(listing.userId);
-    this.setState({
-      showModal: true,
-      selectedListing: listing
-    });
+    this.fetchOwnerData(listing.userId, listing);
   }
 
   hideListingModal () {
@@ -158,7 +159,7 @@ class Listings extends Component {
           </Transition>
          </div>,
       <Container>
-        {this.state.showModal && (
+        {showModal && (
           <ListingModal 
             listing={selectedListing} 
             open={this.state.showModal} 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Form, Input, TextArea, Select } from 'formsy-semantic-ui-react';
-import { Container, Image, List, Grid, Header, Segment, Button, Message, Label } from 'semantic-ui-react';
+import { Form} from 'formsy-semantic-ui-react';
+import { Container, Image, List, Grid, Header, Segment, Message, Label } from 'semantic-ui-react';
 
 class Profile extends Component {
   constructor (props) {

@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var db = require('../database/index.js');
-var bcrypt = require('bcrypt');
 
 router.get('/:ownerId', (req, res) => {
   // db.findById(req.params.ownerId, (err, user) => {
@@ -27,19 +26,16 @@ router.post('/', (req, res) => {
 
     if (!friendships.length) {
       // create new frienship request entry
-      db.addFriendRequest(req.body.userId, req.body.friendId, (err, friendships) => {
-
-      })
+      db.addFriendRequest(req.body.userId, req.body.friendId, (err, result) => {
+        err ? res.status(400).send() : res.json();
+      });
     } else {
-      // update existing friendship status to pending 
+      // update existing friendship status to pending
+      db.updateFriendshipStatus(req.body.status, req.body.userId, req.body.friendId, (err, result) => { 
+        err ? res.status(400).send() : res.json();
+      });
     }
-
-    res.send();
   });
-
-
-  res.send();
-
 });
 
 module.exports = router;

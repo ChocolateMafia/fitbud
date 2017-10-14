@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Menu } from 'semantic-ui-react';
 
 class DashNav extends Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
     return (
@@ -14,7 +14,7 @@ class DashNav extends Component {
         <Menu.Item name='upcoming workouts' active={this.props.view === 'upcoming workouts'} onClick={this.props.handleClick} />
         <Menu.Item name='events' active={this.props.view === 'events'} onClick={this.props.handleClick} />
       </Menu>
-    )
+    );
   }
 
 }

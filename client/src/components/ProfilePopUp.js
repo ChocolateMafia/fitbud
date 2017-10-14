@@ -16,7 +16,8 @@ class ProfilePopUp extends Component {
   sendFriendRequest() {
     var formData = {
       userId: this.props.user.id,
-      friendId: this.props.owner.id
+      friendId: this.props.owner.id,
+      status: 'pending'
     };
 
     var options = {
