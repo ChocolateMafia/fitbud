@@ -7,30 +7,11 @@ class MainNav extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      eventsCount: 0
-    };
-
-    this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.handleEventsClick = this.handleEventsClick.bind(this);
   }
 
-  handleLoginClick() {
-    fetch('events/update', { credentials: 'include' })
-      .then(response => {
-        this.setState({eventsCount: 0});
-      })
-  }
-  componentDidMount() {
-    this.updateEventCount();
-  }
-
-  updateEventCount() {
-    fetch('/events/count', { credentials: 'include' })
-      .then(response => response.json())
-      .then(response => {
-        this.setState({eventsCount: response});
-        setTimeout(this.updateEventCount.bind(this), 5000);
-    });
+  handleEventsClick() {
+    this.props.handleEventsClick()
   }
 
   signOutRedirect = () => {}
@@ -40,12 +21,12 @@ class MainNav extends Component {
       <Menu secondary size='huge' style={{marginBottom: 0}}>
         <Menu.Item exact name='home' as={NavLink} to='/' />
         <Menu.Item name='listings' as={NavLink} to='/listings' />
-        {(this.props.isAuthed) && (this.state.eventsCount > 0) && (
-          <Menu.Item name='events' onClick={this.handleLoginClick} as={NavLink} to='/dashboardEvents'>
-            Events <Label color='teal'>{this.state.eventsCount}</Label>
+        {(this.props.isAuthed) && (this.props.eventsCount > 0) && (
+          <Menu.Item name='events' onClick={this.handleEventsClick} as={NavLink} to='/dashboardEvents'>
+            Events <Label color='teal'>{this.props.eventsCount}</Label>
           </Menu.Item>)}
-        {(this.props.isAuthed) && (this.state.eventsCount === 0)  && (
-          <Menu.Item name='events' onClick={this.handleLoginClick} as={NavLink} to='/dashboardEvents'>
+        {(this.props.isAuthed) && (this.props.eventsCount === 0)  && (
+          <Menu.Item name='events' onClick={this.handleEventsClick} as={NavLink} to='/dashboardEvents'>
             Events
            </Menu.Item>)}
         <Menu.Item name='about' as={NavLink} to='/about' />

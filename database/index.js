@@ -1,6 +1,7 @@
 var mysql = require('mysql');
 var bcrypt = require('bcrypt');
 var Promise = require('bluebird');
+var Pusher = require('pusher');
 
 var connection = mysql.createConnection({
   host: process.env.DBSERVER || 'localhost',
@@ -16,6 +17,15 @@ connection.connect(function(err) {
     console.log('connected to db');
   }
 });
+
+var pusher = new Pusher({
+  appId: '414562',
+  key: '7f1979bc2b65ed9a895f',
+  secret: '61950201d0e83697ec9d',
+  cluster: 'us2',
+  encrypted: true
+});
+var eventsChannel = 'events';
 
 var createUser = function(userObj, callback) {
   var query = 'INSERT INTO users SET ?';
@@ -295,6 +305,7 @@ var createEvent = function(requestObj, callback) {
   //postingId: postingId,
   var description = '';
   var title = '';
+  var recipients;
   return getAuthorForEvent(requestObj.author, requestObj.postingId)
     .then((result) => {
       if (result.length) {
@@ -323,7 +334,7 @@ var createEvent = function(requestObj, callback) {
       return getRecipientsForEvent(requestObj.author, requestObj.objectId, requestObj.postingId, requestObj.type, requestObj.status);
     })
     .then((result) => {
-      var recipients = result.reduce((acc, object) => {
+      recipients = result.reduce((acc, object) => {
         if (object.userId !== requestObj.author) {
           acc.push(object.userId);
         }
@@ -346,6 +357,9 @@ var createEvent = function(requestObj, callback) {
     })
     .then((result) => {
       console.log('createEvent result', result);
+      pusher.trigger(eventsChannel, 'event', {
+        "message": recipients
+      });
       callback(result);
     })
     .catch((error) => {

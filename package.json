@@ -24,7 +24,8 @@
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "passport-http": "*",
-    "passport-local": "*"
+    "passport-local": "*",
+    "pusher": "^1.5.1"
   },
   "devDependencies": {
     "eslint": "^4.8.0",
