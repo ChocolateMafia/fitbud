@@ -12,6 +12,7 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
   if (err) {
+    console.log(process.env.DBNAME);
     console.error('could not connect to db', err);
   } else {
     console.log('connected to db');
