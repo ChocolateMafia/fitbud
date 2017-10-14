@@ -22,11 +22,18 @@ router.get('/:ownerId', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  var userId = req.session.passport.user;
-  console.log(req.body);
-
   db.getFriendshipStatus(req.body.userId, req.body.friendId, (err, friendships) => {
     console.log('/friends -- friendships:', friendships);
+
+    if (!friendships.length) {
+      // create new frienship request entry
+      db.addFriendRequest(req.body.userId, req.body.friendId, (err, friendships) => {
+
+      })
+    } else {
+      // update existing friendship status to pending 
+    }
+
     res.send();
   });
 
