@@ -47,7 +47,7 @@ router.post('/',
 );
 
 router.get('/', (req, res) => {
-  console.log('user profile', req.user);
+  //console.log('user profile', req.user);
   if (req.user) {
     res.json(req.user);
   } else {
