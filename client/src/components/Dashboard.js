@@ -15,7 +15,7 @@ class Dashboard extends Component {
     super(props);
 
     this.state = {
-      view: props.view,
+      view: 'events',
       data: [],
       var: true,
       friends: [],
