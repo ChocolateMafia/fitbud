@@ -96,4 +96,19 @@ router.patch('/accept/:id', (req, res) => {
   });
 });
 
+router.get('/members/:id', (req, res) => {
+  console.log('Listing members req, listingId:', req.params.id);
+
+  db.getWorkoutMembers(req.params.id, (err, userObjs) => {
+    console.log('memberIds', userObjs);
+
+    var memberIds = userObjs.map(user => user.userId);
+
+    db.findByIds(memberIds, (err, members) => {
+      err ? res.status(400).send() : res.json({members});
+    });
+
+  });
+});
+
 module.exports = router;
