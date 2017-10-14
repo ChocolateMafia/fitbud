@@ -15,6 +15,7 @@ var Pusher = require('pusher');
 console.log('db server', process.env.DBSERVER);
 console.log('db user', process.env.DBUSER);
 console.log('db password', process.env.DBPASSWORD);
+console.log('db name', process.env.DBNAME);
 
 var options = {
   host: process.env.DBSERVER || 'localhost',
