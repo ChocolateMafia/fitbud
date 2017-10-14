@@ -7,7 +7,7 @@ var connection = mysql.createConnection({
   host: process.env.DBSERVER || 'localhost',
   user: process.env.DBUSER || 'root',
   password: process.env.DBPASSWORD || '',
-  database: 'fitbud'
+  database: process.env.DBNAME || 'fitbud'
 });
 
 connection.connect(function(err) {
