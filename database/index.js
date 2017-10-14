@@ -101,6 +101,7 @@ var getUserFriendships = function (userId, callback) {
   var query = 'SELECT * from friendship WHERE (userId = ? OR friendId = ?) AND (status != "reject")';
 
   connection.query(query, [userId, userId], function(err, results) {
+    console.log('&&&&&&&&&&&&&&', results);
     if (err) {
       console.error('error when finding user friendships', err);
     } else {
@@ -147,6 +148,11 @@ var findById = function(id, callback) {
 
 var findByIds = function(ids, callback) {
   console.log('database bulk ids search');
+  
+  if (!ids.length) { 
+    callback(null, []); 
+  }
+
   var query = 'SELECT * FROM users WHERE id IN ( ? )';
   connection.query(query, [ids], function(err, dbResultArr) {
     if (err) {
