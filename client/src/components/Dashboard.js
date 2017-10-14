@@ -50,17 +50,10 @@ class Dashboard extends Component {
         this.dataPull();
       });
 
-    // fetch(`/postings/requests/${id}`, { credentials: "include" })
-    //   .then(response => response.json())
-    //   .then(response => {
-    //     //console.log('requests response #' + id, response);
-    //     this.setState({ requests: response })
-    //   })
     console.log('getting posting requests');
   }
 
   handleTabClick(e, { name }) {
-    // console.log('I\'ve been clicked, and my name is: ' + name);
     this.setState({ view: name });
   }
 
