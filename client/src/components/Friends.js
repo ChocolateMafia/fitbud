@@ -10,8 +10,8 @@ class Friends extends Component {
       visible: false,
     };
 
-    this.handleApprove = this.handleApprove.bind();
-    this.handleReject = this.handleReject.bind();
+    this.handleApprove = this.handleApprove.bind(this);
+    this.handleReject = this.handleReject.bind(this);
   }
 
   componentDidMount () {
@@ -19,13 +19,39 @@ class Friends extends Component {
   }  
 
   handleApprove (id) {
-    console.log('Approve requester id:', id);
-
+    console.log('Accept requester id:', id);
+    var options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify({userId: id, friendId: this.props.user.id})
+    };
+    fetch('/friends/accept', options)
+      .then(response => {
+        if (response.ok) {
+          this.props.fetchFriends();
+        }
+      });        
   }
 
   handleReject (id) {
     console.log('Reject requester id:', id);
-
+    var options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify({userId: id, friendId: this.props.user.id})
+    };
+    fetch('/friends/reject', options)
+      .then(response => {
+        if (response.ok) {
+          this.props.fetchFriends();
+        }
+      }); 
   }
 
   render () {
@@ -57,7 +83,7 @@ class Friends extends Component {
                 <Card.Content extra>
                   <div className='ui two buttons'>
                     <Button basic color='green' onClick={() => this.handleApprove(requester.id)}>Approve</Button>
-                    <Button basic color='red' onClick={() => this.handleApprove(requester.id)}>Decline</Button>
+                    <Button basic color='red' onClick={() => this.handleReject(requester.id)}>Decline</Button>
                   </div>
                 </Card.Content>
               </Card>          

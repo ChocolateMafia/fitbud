@@ -21,8 +21,17 @@ router.get('/:userId', (req, res) => {
       return arr;
     }, []);
 
+
+    console.log('$$$$$$$$$$$$$$$$$$$$$$$ FriendsIds', friendsIds);
+    console.log('$$$$$$$$$$$$$$$$$$$$$$$ RequestersIds', requestersIds);
+
+
     db.findByIds(friendsIds, (err, friends) => {
+      console.log('$$$$$$$$$$$$$$$$$$$$$$$ Friends', friends);
+
       db.findByIds(requestersIds, (err, requesters) => {
+        console.log('$$$$$$$$$$$$$$$$$$$$$$$ requesters', requesters);
+
         err ? res.status(400).send() : res.json({friends, requesters});
       });
     });
@@ -45,6 +54,18 @@ router.post('/', (req, res) => {
         err ? res.status(400).send() : res.json();
       });
     }
+  });
+});
+
+router.post('/accept', (req, res) => {
+  db.updateFriendshipStatus('accept', req.body.userId, req.body.friendId, (err, result) => {
+    err ? res.status(400).send() : res.json();
+  });
+});
+
+router.post('/reject', (req, res) => {
+  db.updateFriendshipStatus('reject', req.body.userId, req.body.friendId, (err, result) => {
+    err ? res.status(400).send() : res.json();
   });
 });
 
