@@ -8,6 +8,7 @@ import Requests from './Requests';
 import Invites from './Invites';
 import Events from './Events';
 import Friends from './Friends';
+import PastWorkouts from './PastWorkouts';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -92,6 +93,7 @@ class Dashboard extends Component {
         {this.state.view === 'my workouts' && (<Workouts key='workouts' data={this.state.data} user={this.props.user} update={this.update} dataPull={this.dataPull} />)}
         {this.state.view === 'my requests' && ([<Requests key='requests' user={this.props.user}/>])}
         {this.state.view === 'upcoming workouts' && ([<Invites key='invites' user={this.props.user}/>])}
+        {this.state.view === 'past workouts' && ([<PastWorkouts key='past' user={this.props.user}/>])}
         {this.state.view === 'events' && ([<Events key='events'/>])}
         {this.state.view === 'friends' && ([<Friends key='friends' user={this.props.user} friends={this.state.friends} requesters={this.state.requesters} fetchFriends={this.fetchFriends} />])}
 

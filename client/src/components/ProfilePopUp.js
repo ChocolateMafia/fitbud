@@ -36,7 +36,7 @@ class ProfilePopUp extends Component {
             friendship: 'pending'
           });
         }
-      });    
+      });
   }
 
   render () {

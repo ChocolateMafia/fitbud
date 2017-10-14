@@ -11,7 +11,7 @@ import Dashboard from './Dashboard';
 import CreateListing from './CreateListing';
 import Profile from './Profile';
 import data from '../sampleData';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Pusher from 'pusher-js';
 var pusherKey = '7f1979bc2b65ed9a895f';
 var eventsChannel = 'events';
@@ -37,6 +37,8 @@ class App extends Component {
     this.cookies = new Cookies();
     console.log('checking auth...');
     this.checkAuth();
+
+    console.log('something   ');
   }
   
   checkAuth () {
@@ -140,20 +142,23 @@ class App extends Component {
 
             <Route exact path='/signup' component={Signup} />
 
-            <Route exact path='/dashboard' render={props => (
-              <Dashboard listings={data} view='my workouts' user={this.state.user} {...props} />
+            <Route exact path='/dashboard' render={props => ( this.state.authenticated ? 
+              (<Dashboard listings={data} view='my workouts' user={this.state.user} {...props} />) : 
+              (<Redirect to='/' />)
             )} />
 
             <Route exact path='/dashboardEvents' render={props => (
               <Dashboard listings={data} user={this.state.user} view='events' {...props} />
             )} />
 
-            <Route exact path='/create' render={props => (
-              <CreateListing {...props} />
+            <Route exact path='/create' render={props => ( this.state.authenticated ? 
+              (<CreateListing {...props} />) :
+              (<Redirect to='/' />)
             )} />
 
-            <Route exact path='/profile' render={props => (
-              <Profile user={this.state.user} handleProfileUpdate={this.handleProfileUpdate} {...props} />
+            <Route exact path='/profile' render={props => ( this.state.authenticated ? 
+              (<Profile user={this.state.user} handleProfileUpdate={this.handleProfileUpdate} {...props} />) :
+              (<Redirect to='/' />)
             )} />
 
             <Route component={NoMatch} />
