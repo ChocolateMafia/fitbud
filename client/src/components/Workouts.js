@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Icon, Image, Transition, Container } from 'semantic-ui-react';
+import { Card, Image, Transition, Container } from 'semantic-ui-react';
 import WorkoutDropdown from './WorkoutDropdown';
 import ListingModal from './ListingModal.js';
 

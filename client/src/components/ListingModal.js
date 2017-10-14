@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal, Header, Button, Image, Icon, Divider, Comment, Form, Popup } from 'semantic-ui-react';
+import { Modal, Header, Button, Image, Icon, Divider, Comment, Form} from 'semantic-ui-react';
 import Chat from './Chat';
 import ProfilePopUp from './ProfilePopUp';
 
@@ -75,7 +75,7 @@ class ListingModal extends Component {
   }
 
   render() {
-    var { listing, open, hideListingModal, ownerImage, user, messages} = this.props;
+    var { listing, open, hideListingModal, ownerImage, user } = this.props;
 
     return (
       <Modal open={open} onClose={hideListingModal} closeIcon dimmer='false'>

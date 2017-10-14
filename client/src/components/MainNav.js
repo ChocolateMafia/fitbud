@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import LoginButtonModal from './LoginButtonModal.js';
+// import LoginButtonModal from './LoginButtonModal.js';
 import { Menu, Input, Button, Label, Dropdown } from 'semantic-ui-react';
-import { NavLink, Link, Redirect } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 
 class MainNav extends Component {
   constructor(props) {

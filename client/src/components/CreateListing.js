@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Grid, Header, Image, Segment, Button, Transition, Label, Message } from 'semantic-ui-react';
+import { Grid, Header, Segment, Button, Transition, Label, Message } from 'semantic-ui-react';
 import { Form, Input, TextArea, Select } from 'formsy-semantic-ui-react';
 import _ from 'lodash';
 
@@ -60,24 +60,20 @@ class CreateListing extends Component {
       })
   };
 
-  componentDidMount() {
-    this.setState({visible: true})
-  }
-
   render() {
-    const styles = {
-      root: {
-        marginTop: 18,
-        // padding: '0 24px 24px 24px',
-      },
+    // const styles = {
+    //   root: {
+    //     marginTop: 18,
+    //     // padding: '0 24px 24px 24px',
+    //   },
 
-      customErrorLabel: {
-        color: '#f00',
-        textAlign: 'center',
-      },
-    };
+    //   customErrorLabel: {
+    //     color: '#f00',
+    //     textAlign: 'center',
+    //   },
+    // };
 
-    const errorLabel = <Label color="red" pointing/>;
+    //const errorLabel = <Label color="red" pointing/>;
 
     const titleInput = (
       <Input

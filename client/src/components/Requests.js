@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Icon, Image, Transition, Container } from 'semantic-ui-react';
+import { Card, Image, Transition, Container } from 'semantic-ui-react';
 import ListingModal from './ListingModal.js';
 
 class Requests extends Component {
@@ -44,7 +44,7 @@ class Requests extends Component {
   images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
 
   render() {
-    var { listing, showModal, selectedListing } = this.state;
+    var { selectedListing } = this.state;
     //console.log('props from dashboard to requests', this.props);
     return (
       [<Transition visible={this.state.visible} duration={1000} animation='fade'>

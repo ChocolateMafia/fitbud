@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Input } from 'formsy-semantic-ui-react';
-import { Container, Grid, Header, Image, Segment, Button, Transition, Label, Message, Icon } from 'semantic-ui-react';
-import { Redirect, Link } from 'react-router-dom';
+import { Grid, Header, Button, Transition, Label, Message } from 'semantic-ui-react';
+//import { Link, Redirect } from 'react-router-dom';
 
 const styles = {
   root: {
@@ -64,7 +64,7 @@ class Signup extends Component {
   };
 
   render() {
-    const errorLabel = <Label color="red" pointing/>;
+    //const errorLabel = <Label color="red" pointing/>;
 
     const nameInput = (
       <Input

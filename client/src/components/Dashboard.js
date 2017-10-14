@@ -62,7 +62,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    var { listings } = this.props;
+    //var { listings } = this.props;
 
     return (
       <Container style={{marginTop: '20px'}}>

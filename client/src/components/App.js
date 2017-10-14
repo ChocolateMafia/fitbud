@@ -11,7 +11,7 @@ import Dashboard from './Dashboard';
 import CreateListing from './CreateListing';
 import Profile from './Profile';
 import data from '../sampleData';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Pusher from 'pusher-js';
 var pusherKey = '7f1979bc2b65ed9a895f';
 var eventsChannel = 'events';
