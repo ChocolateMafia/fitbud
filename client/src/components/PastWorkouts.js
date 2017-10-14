@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Card, Icon, Image, Transition, Container } from 'semantic-ui-react';
 import ListingModal from './ListingModal.js';
 
-class Invites extends Component {
+class PastWorkouts extends Component {
   constructor(props) {
     super(props);
 
@@ -50,7 +50,7 @@ class Invites extends Component {
           response => {
             console.log('invites', response);
             this.setState({ 
-              invites: response.filter(item => (new Date(item.date).getTime()) > (new Date().getTime())),
+              invites: response.filter(item => (new Date(item.date).getTime()) < (new Date().getTime())),
               visible: true
             });
           }
@@ -102,4 +102,4 @@ class Invites extends Component {
 
 }
 
-export default Invites;
+export default PastWorkouts;

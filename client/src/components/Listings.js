@@ -20,9 +20,12 @@ class Listings extends Component {
     this.hideListingModal = this.hideListingModal.bind(this);
     this.showListingModal = this.showListingModal.bind(this);
     this.fetchOwnerData = this.fetchOwnerData.bind(this);
+    this.toggleVisibility = this.toggleVisibility.bind(this);
   }
 
-  toggleVisibility = () => this.setState({ barVisible: !this.state.barVisible })
+  toggleVisibility () {
+    this.setState({ barVisible: !this.state.barVisible });
+  } 
 
   componentDidMount() {
     this.setState({visible: true});
