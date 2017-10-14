@@ -31,11 +31,11 @@ class MainNav extends Component {
         <Menu.Item exact name='home' as={NavLink} to='/' />
         <Menu.Item name='listings' as={NavLink} to='/listings' />
         {(this.props.isAuthed) && (this.props.eventsCount > 0) && (
-          <Menu.Item name='events' onClick={this.handleEventsClick} as={NavLink} to='/dashboardEvents'>
+          <Menu.Item name='events' onClick={this.handleEventsClick} as={NavLink} to='/dashboard'>
             Events <Label color='teal'>{this.props.eventsCount}</Label>
           </Menu.Item>)}
         {(this.props.isAuthed) && (this.props.eventsCount === 0)  && (
-          <Menu.Item name='events' onClick={this.handleEventsClick} as={NavLink} to='/dashboardEvents'>
+          <Menu.Item name='events' onClick={this.handleEventsClick} as={NavLink} to='/dashboard'>
             Events
            </Menu.Item>)}
         <Menu.Item name='about' as={NavLink} to='/about' />
