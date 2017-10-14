@@ -16,7 +16,9 @@ class Dashboard extends Component {
     this.state = {
       view: props.view,
       data: [],
-      var: true
+      var: true,
+      friends: [],
+      requesters: []
     };
 
     this.handleTabClick = this.handleTabClick.bind(this);
@@ -33,7 +35,7 @@ class Dashboard extends Component {
         console.log('Requesters ', data.requesters);
         this.setState({
           friends: data.friends,
-          requester: data.requesters
+          requesters: data.requesters
         });        
       });    
   }
@@ -91,8 +93,8 @@ class Dashboard extends Component {
         {this.state.view === 'my requests' && ([<Requests key='requests' user={this.props.user}/>])}
         {this.state.view === 'upcoming workouts' && ([<Invites key='invites' user={this.props.user}/>])}
         {this.state.view === 'events' && ([<Events key='events'/>])}
-        {this.state.view === 'friends' && ([<Friends key='friends' user={this.props.user} />])}
-
+        {this.state.view === 'friends' && ([<Friends key='friends' user={this.props.user} friends={this.state.friends} requesters={this.state.requesters} />])}
+        
       </Container>
     );
   }
