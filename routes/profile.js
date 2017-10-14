@@ -9,7 +9,7 @@ router.get('/:ownerId', (req, res) => {
       user.friendship = null;
     } else {
       db.getFriendshipStatus(req.user.id, user.id, (err, friendships) => {
-        console.log('frienship', friendships);
+        console.log('/profile -- friendships:', friendships);
         if (friendships.length === 0) {
           user.friendship = null;
         } else {

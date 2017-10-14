@@ -7,20 +7,35 @@ class ProfilePopUp extends Component {
     super(props);
 
     this.state = {
-      requestSent: false,
-      friendship: ''
+      friendship: this.props.owner.friendship
     };
   
     this.sendFriendRequest = this.sendFriendRequest.bind(this);
-    this.fetchFriendshipStatus = this.fetchFriendshipStatus.bind(this);
-  }
-
-  fetchFriendshipStatus () {
-    
   }
 
   sendFriendRequest() {
+    var formData = {
+      userId: this.props.user.id,
+      friendId: this.props.owner.id
+    };
 
+    var options = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      credentials: 'include',
+      body: JSON.stringify(formData)
+    };
+
+    fetch('/friends', options)
+      .then(response => {
+        if (response.ok) {
+          this.setState({
+            friendship: 'pending'
+          });
+        }
+      });    
   }
 
   render () {
@@ -65,12 +80,12 @@ class ProfilePopUp extends Component {
           <Card.Content extra textAlign='center'>
             {user && 
               <Button 
-                disabled={owner.friendship === 'accept' || user.id === owner.id} 
-                primary={owner.friendship !== 'accept'}
-                positive={owner.friendship === 'accept'}
+                disabled={this.state.friendship === 'accept' || this.state.friendship === 'pending' || user.id === owner.id} 
+                primary={this.state.friendship !== 'accept'}
+                positive={this.state.friendship === 'accept'}
                 onClick={this.sendFriendRequest}
               >
-                {owner.friendship ? statusMsg[owner.friendship] : 'Send Friend Request'} &nbsp; <Icon name={statusIcon[owner.friendship] || 'add user'} />
+                {this.state.friendship ? statusMsg[this.state.friendship] : 'Send Friend Request'} &nbsp; <Icon name={statusIcon[this.state.friendship] || 'add user'} />
               </Button>
             }
           </Card.Content>

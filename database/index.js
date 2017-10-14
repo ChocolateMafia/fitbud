@@ -49,7 +49,7 @@ var updateUser = function(userId, profileObj, callback) {
   var query = 'UPDATE users SET ? WHERE id = ?';
   connection.query(query, [profileObj, userId], function(err, result) {
     if (err) {
-      console.error(error);
+      console.error(err);
       callback(err, null);
     } else {
       callback(null, result);
@@ -102,7 +102,7 @@ var updateFriendshipStatus = function (status, userId, friendId, callback) {
 
   connection.query(query, [status, userId, friendId, friendId, userId], function(err, result) {
     if (err) {
-      console.error(error);
+      console.error(err);
       callback(err, null);
     } else {
       callback(null, result);

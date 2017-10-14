@@ -53,6 +53,7 @@ var routeLogout = require('../routes/logout');
 var routeEvents = require('../routes/events');
 var routeMessages = require('../routes/messages');
 var routeFacebookAuth = require('../routes/facebookAuth');
+var routeFriend = require('../routes/friends');
 
 app.use(bodyParser.json()); 
 app.use(cookieParser());
@@ -84,11 +85,11 @@ app.use('/postings', routePostings);
 app.use('/events', routeEvents);
 app.use('/messages', routeMessages);
 app.use('/auth/facebook', routeFacebookAuth);
-//app.user('/user')
 
 app.use(checkAuth);
 
 // Below are the protected routes
+app.use('/friends', routeFriend);
 app.use('/profile', routeProfile);
 app.use('/workout', routeWorkout);
 app.use('/dashboard', routeDashboard);
