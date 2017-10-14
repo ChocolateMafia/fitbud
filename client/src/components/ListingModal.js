@@ -75,7 +75,7 @@ class ListingModal extends Component {
   }
 
   render() {
-    var { listing, open, hideListingModal, ownerImage, user } = this.props;
+    var { listing, open, hideListingModal, ownerImage, user, showRequest } = this.props;
 
     return (
       <Modal open={open} onClose={hideListingModal} closeIcon dimmer='false'>
@@ -129,7 +129,7 @@ class ListingModal extends Component {
             Close<Icon name='close' />
           </Button>
 
-          {user && (user.id !== listing.ownerId) && (listing.status !== 'accept') && <Button disabled={this.state.requestSent || listing.status === 'pending'} primary onClick={this.sendRequest}>
+          {user && showRequest && (user.id !== listing.ownerId) && (listing.status !== 'accept') && <Button disabled={this.state.requestSent || listing.status === 'pending'} primary onClick={this.sendRequest}>
             { this.state.requestSent || listing.status === 'pending' ? 'Pending' : 'Request to join' } <Icon name='right chevron' />
           </Button>}
           {user && (user.id !== listing.ownerId) && (listing.status === 'accept') && <Button style={{background: '#21ba45'}} disabled={true} primary>
