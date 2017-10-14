@@ -2,7 +2,10 @@ var express = require('express');
 var router = express.Router();
 var db = require('../database/index.js');
 
-router.get('/:ownerId', (req, res) => {
+router.get('/:userId', (req, res) => {
+
+
+  
   // db.findById(req.params.ownerId, (err, user) => {
   //   if (user.id === req.user) {
   //     user.friendship = null;

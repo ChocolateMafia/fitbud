@@ -85,12 +85,24 @@ var addFriendRequest = function (userId, friendId, callback) {
   });
 };
 
-var getFriendshipStatus = function(userId, friendId, callback) {
+var getFriendshipStatus = function (userId, friendId, callback) {
   var query = 'SELECT * from friendship WHERE (userId = ? AND friendId = ?) OR (userId = ? AND friendId = ?)';
 
   connection.query(query, [userId, friendId, friendId, userId], function(err, results) {
     if (err) {
       console.error('error when finding friendship', err);
+    } else {
+      callback(null, results);
+    }
+  });
+};
+
+var getUserFriendships = function (userId, callback) {
+  var query = 'SELECT * from friendship WHERE (userId = ? OR friendId = ?) AND (status != "reject")';
+
+  connection.query(query, [userId, userId], function(err, results) {
+    if (err) {
+      console.error('error when finding user friendships', err);
     } else {
       callback(null, results);
     }
@@ -505,7 +517,8 @@ module.exports = {
   getMessages,
   addFriendRequest,
   updateFriendshipStatus,
-  getFriendshipStatus
+  getFriendshipStatus,
+  getUserFriendships
 };
 
 

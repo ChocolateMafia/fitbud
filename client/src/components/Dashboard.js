@@ -22,8 +22,20 @@ class Dashboard extends Component {
     this.handleTabClick = this.handleTabClick.bind(this);
     this.update = this.update.bind(this);
     this.dataPull = this.dataPull.bind(this);
+    this.fetchFriends = this.fetchFriends.bind(this);
   }
   
+  fetchFriends () {
+    fetch('/friends/' + this.props.user.id, {credentials: 'include'})
+      .then(response => response.json())
+      .then(friends => {
+        console.log('Friends Data', friends);
+        this.setState({
+          friends
+        });        
+      });    
+  }
+
   dataPull() {
     fetch('/dashboard', { credentials: 'include' })
       .then(response => response.json())
