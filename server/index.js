@@ -58,14 +58,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-app.use(function (req, res, next) {
-  console.log('body', req.body);
-  console.log('session', req.session);
-  console.log('isAuth?', req.isAuthenticated());
-  console.log('req user:', req.user);
-  console.log('cookie', req.cookies);
-  next();
-});
+// app.use(function (req, res, next) {
+//   console.log('body', req.body);
+//   console.log('session', req.session);
+//   console.log('isAuth?', req.isAuthenticated());
+//   console.log('req user:', req.user);
+//   console.log('cookie', req.cookies);
+//   next();
+// });
 
 app.use('/register', routeRegister);
 app.use('/login', routeLogin);

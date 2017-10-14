@@ -139,8 +139,20 @@ var findById = function(id, callback) {
     if (err) {
       console.error('error when finding id');
     } else {
-      console.log('result of finding a id', dbResultArr[0]);
+      //console.log('result of finding a id', dbResultArr[0]);
       callback(null, dbResultArr[0]);
+    }
+  });  
+};
+
+var findByIds = function(ids, callback) {
+  console.log('database bulk ids search');
+  var query = 'SELECT * FROM users WHERE id IN ( ? )';
+  connection.query(query, [ids], function(err, dbResultArr) {
+    if (err) {
+      console.error('error when finding ids');
+    } else {
+      callback(null, dbResultArr);
     }
   });  
 };
@@ -502,6 +514,7 @@ module.exports = {
   createWorkout,
   createProfile,
   findById,
+  findByIds,
   getUserPostings,
   getUserRequestPostings,
   createRequest,
