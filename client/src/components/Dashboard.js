@@ -28,10 +28,12 @@ class Dashboard extends Component {
   fetchFriends () {
     fetch('/friends/' + this.props.user.id, {credentials: 'include'})
       .then(response => response.json())
-      .then(friends => {
-        console.log('Friends Data', friends);
+      .then(data => {
+        console.log('Friends ', data.friends);
+        console.log('Requesters ', data.requesters);
         this.setState({
-          friends
+          friends: data.friends,
+          requester: data.requesters
         });        
       });    
   }
@@ -72,6 +74,7 @@ class Dashboard extends Component {
 
   componentDidMount() {
     this.dataPull();
+    this.fetchFriends();
   }
 
   render() {
