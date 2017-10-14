@@ -24,6 +24,12 @@ class Listings extends Component {
 
   toggleVisibility = () => this.setState({ barVisible: !this.state.barVisible })
 
+  componentDidMount() {
+    this.setState({visible: true});
+    console.log('mounting');
+    this.updateListings();
+  }  
+
   updateListings () {
     fetch('/postings', {credentials: 'include'})
       .then(response => response.json())
@@ -48,13 +54,6 @@ class Listings extends Component {
           selectedListing: listing
         });        
       });
-  }
-
-  componentDidMount() {
-    this.setState({visible: true});
-    console.log('mounting');
-
-    this.updateListings();
   }
 
   showListingModal(listing) {

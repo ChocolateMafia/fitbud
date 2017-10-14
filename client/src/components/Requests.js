@@ -13,38 +13,52 @@ class Requests extends Component {
       showModal: false,
       selectedListing: null
     };
+
+    this.fetchOwnerData = this.fetchOwnerData.bind(this);
+    this.showListingModal = this.showListingModal.bind(this);
+    this.hideListingModal = this.hideListingModal.bind(this);
   }
 
   componentDidMount() {
     this.setState({visible: true});
-    fetch('/dashboard/requests', { credentials: "include" })
+    fetch('/dashboard/requests', { credentials: 'include' })
       .then(response => response.json()
         .then(
           response => {
             this.setState({ requests: response });
           }
         )
-      )
+      );
   }
 
-  showListingModal(listing) {
-    console.log(listing);
-    this.setState({
-      showModal: true,
-      selectedListing: listing
-    });
+  fetchOwnerData (ownerId, listing) {
+    fetch('/profile/' + ownerId, {credentials: 'include'})
+      .then(response => response.json())
+      .then(owner => {
+        console.log('Owner Data', owner);
+        this.setState({
+          owner,
+          showModal: true,
+          selectedListing: listing
+        });        
+      });
+  }  
+
+  showListingModal (listing) {
+    this.fetchOwnerData(listing.userId, listing);
   }
 
-  hideListingModal = () => {
+  hideListingModal () {
     this.setState({
       showModal: false,
       selectedListing: null
     });
   }
-  images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
 
   render() {
     var { selectedListing } = this.state;
+    var images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
+
     //console.log('props from dashboard to requests', this.props);
     return (
       [<Transition visible={this.state.visible} duration={1000} animation='fade'>
@@ -53,7 +67,7 @@ class Requests extends Component {
             {this.state.requests.map(listing => (
               <Card key={listing.id} onClick={() =>this.showListingModal(listing)}>
                 <Card.Content>
-                  <Image src={listing.picture? listing.picture: '/' + this.images[Math.floor(Math.random() * this.images.length)]} size='mini' floated='left'/>
+                  <Image src={listing.picture ? listing.picture : '/' + images[Math.floor(Math.random() * images.length)]} size='mini' floated='left'/>
                   <Card.Header>{listing.activity}</Card.Header>
                   <Card.Meta>{listing.location}</Card.Meta>
                   <Card.Description>{`Schedule on ${new Date(listing.date).toDateString()} for ${listing.duration} hours`}</Card.Description>
@@ -63,15 +77,19 @@ class Requests extends Component {
           </Card.Group>
         </Container>
       </Transition>,
-        <Container>
+      <Container>
         {this.state.showModal && (
-          <ListingModal listing={selectedListing} open={this.state.showModal} 
-                        hideListingModal={this.hideListingModal} 
-                        user={this.props.user}
-                        ownerImage={selectedListing.picture ? selectedListing.picture : '/' + this.images[Math.floor(Math.random() * this.images.length)]} />
+          <ListingModal 
+            listing={selectedListing} 
+            open={this.state.showModal} 
+            hideListingModal={this.hideListingModal} 
+            user={this.props.user}
+            ownerImage={selectedListing.picture ? selectedListing.picture : '/' + images[Math.floor(Math.random() * images.length)]} 
+            owner={this.state.owner}
+          />
         )}
       </Container>]
-    )
+    );
   }
 
 }

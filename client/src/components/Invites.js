@@ -14,11 +14,21 @@ class Invites extends Component {
     }
   }
 
-  showListingModal(listing) {
-    this.setState({
-      showModal: true,
-      selectedListing: listing
-    });
+  fetchOwnerData (ownerId, listing) {
+    fetch('/profile/' + ownerId, {credentials: 'include'})
+      .then(response => response.json())
+      .then(owner => {
+        console.log('Owner Data', owner);
+        this.setState({
+          owner,
+          showModal: true,
+          selectedListing: listing
+        });        
+      });
+  }  
+
+  showListingModal (listing) {
+    this.fetchOwnerData(listing.userId, listing);
   }
 
   hideListingModal = () => {
@@ -74,7 +84,8 @@ class Invites extends Component {
           <ListingModal listing={selectedListing} open={this.state.showModal} 
                         hideListingModal={this.hideListingModal} 
                         user={this.props.user}
-                        userImage={this.props.user.picture || userPic} />
+                        ownerImage={this.props.user.picture || userPic}
+                        owner={this.state.owner} />
         )}
       </Container>]
     )
