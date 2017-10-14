@@ -88,15 +88,11 @@ var addFriendRequest = function (userId, friendId, callback) {
 var getFriendshipStatus = function(userId, friendId, callback) {
   var query = 'SELECT * from friendship WHERE (userId = ? AND friendId = ?) OR (userId = ? AND friendId = ?)';
 
-  connection.query(query, [userId, friendId, friendId, userId], function(err, result) {
+  connection.query(query, [userId, friendId, friendId, userId], function(err, results) {
     if (err) {
       console.error('error when finding friendship', err);
     } else {
-      if (dbUserResult.length === 0) {
-        callback(err, null);
-      } else {
-        callback(null, result);
-      }
+      callback(null, results);
     }
   });
 };
@@ -506,7 +502,10 @@ module.exports = {
   getRequestsByPostingId,
   updateRequest,
   createMessage,
-  getMessages
+  getMessages,
+  addFriendRequest,
+  updateFriendshipStatus,
+  getFriendshipStatus
 };
 
 

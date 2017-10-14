@@ -7,6 +7,7 @@ class ProfilePopUp extends Component {
     super(props);
 
     this.state = {
+      requestSent: false,
       friendship: ''
     };
   
@@ -23,39 +24,55 @@ class ProfilePopUp extends Component {
   }
 
   render () {
+    var {user, owner, component, on, position} = this.props;
     var images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
-    var randomPic = '/' + images[Math.floor(Math.random() * images.length)];    
+    var randomPic = '/' + images[Math.floor(Math.random() * images.length)];
+    var statusMsg = {
+      'pending': 'Pending',
+      'accept': 'Friend',
+      'reject': 'Send Friend Request'
+    };
+    var statusIcon = {
+      'pending': 'wait',
+      'accept': 'smile',
+      'reject': 'add user'
+    };
+
     console.log('Profile Props:::::::::', this.props);
 
     return (
       <Popup
-        trigger={this.props.component}
-        on={this.props.on || 'hover'}
-        position={this.props.position || 'top left'}
+        trigger={component}
+        on={on || 'hover'}
+        position={position || 'top left'}
+        hoverable
       >
         <Card>
           <Card.Content>
-            <Image floated='right' size='mini' src={this.props.owner.picture || randomPic} />
+            <Image floated='right' size='mini' src={owner.picture || randomPic} />
             <Card.Header>
-              {this.props.owner.name}
+              {owner.name}
             </Card.Header>
             <Card.Meta>
               <span className='date'>
-                Join on {moment(this.props.owner.created).format('YYYY')} <Icon name={this.props.owner.gender}/> {this.props.owner.age}
+                Join on {moment(owner.created).format('YYYY')} <Icon name={owner.gender}/> {owner.age}
               </span>
             </Card.Meta>
             <Card.Description>
-              <Rating icon='star' defaultRating={this.props.owner.rating} maxRating={5} disabled/>
+              <Rating icon='star' defaultRating={owner.rating} maxRating={5} disabled/>
             </Card.Description>
           </Card.Content>
-          <Card.Content extra>
-            <a>
-              <Icon name='owner' />
-              22 Friends
-            </a>
-            {this.props.user && <Button disabled={this.state.requestSent || listing.status !== null || user.id === listing.ownerId} primary onClick={this.sendFriendRequest}>
-              { this.state.requestSent || listing.status ? 'Pending' : 'Send Friend Request' } <Icon name='right chevron' />
-            </Button>}
+          <Card.Content extra textAlign='center'>
+            {user && 
+              <Button 
+                disabled={owner.friendship === 'accept' || user.id === owner.id} 
+                primary={owner.friendship !== 'accept'}
+                positive={owner.friendship === 'accept'}
+                onClick={this.sendFriendRequest}
+              >
+                {owner.friendship ? statusMsg[owner.friendship] : 'Send Friend Request'} &nbsp; <Icon name={statusIcon[owner.friendship] || 'add user'} />
+              </Button>
+            }
           </Card.Content>
         </Card>
       </Popup>
