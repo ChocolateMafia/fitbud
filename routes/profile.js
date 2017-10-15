@@ -59,4 +59,18 @@ router.post('/', (req, res) => {
   }
 });
 
+router.post('/rating/:userId', (req, res) => {
+  console.log('Rating user req, userId:', req.params.userId);
+  console.log('Rating user req, body:', req.body);
+
+  db.updateUser(req.params.userId, req.body, (err, result) => {
+    console.log(result);
+    if (err) {
+      res.status(400).send();
+    } else {
+      res.json(result);
+    }
+  });
+});
+
 module.exports = router;
