@@ -114,7 +114,7 @@ class Listings extends Component {
         }
         return 0;
       });
-    }
+    } 
     this.setState({listings: listings});
   }
 
@@ -129,6 +129,10 @@ class Listings extends Component {
     }
     if (hrs === 6) {
       newListings = listings.filter(item => item.duration >= 6);
+    }
+    else {
+      var today = new Date().getTime();
+      newListings = listings.filter(item => (new Date(item.date).getTime()) < today);
     }
     this.setState({listings: newListings});
     
@@ -169,10 +173,12 @@ class Listings extends Component {
             <Dropdown.Menu> 
               <Dropdown.Item key='newest' onClick={() => this.handleSort('newest')}>Newest</Dropdown.Item>
               <Dropdown.Item key='upcoming' onClick={() => this.handleSort('upcoming')}>Upcoming</Dropdown.Item>
+
             </Dropdown.Menu>
           </Dropdown>
             <Dropdown key='filter' text='Filter by' pointing style={{marginLeft: '20px', marginTop: '20px'}}>          
             <Dropdown.Menu> 
+              <Dropdown.Item key='previous' onClick={() => this.handleItemClick('previous')}>Previous</Dropdown.Item>
               <Dropdown.Header icon='time' content='Duration' />
                 <Dropdown.Item key='twoHrs' onClick={() => this.handleItemClick(2)}>Less than 2 hrs</Dropdown.Item>
                 <Dropdown.Item key='threeHrs' onClick={() => this.handleItemClick(3)}>3 to 5 hrs</Dropdown.Item>
