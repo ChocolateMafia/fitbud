@@ -12,7 +12,7 @@ var About = () => (
         />
         <Header
           as='h2'
-          content='Fitbud was founded by Liz, Romy, Yu and Tirumari.
+          content='Fitbud was a full stack project by Elena, Aileen and Kenny at Hack Reactor.
           The founders experienced a problem where they wanted a workout buddy to make exercising
           more fun and to keep themselves accountable. They created 
           Fitbud to simplify the process of finding a fitness buddy and turn exercise into an 

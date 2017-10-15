@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Card, Icon, Image, Transition, Container } from 'semantic-ui-react';
 import ListingModal from './ListingModal.js';
+import RatingDropdown from './RatingDropdown';
 
 class PastWorkouts extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class PastWorkouts extends Component {
     this.showListingModal = this.showListingModal.bind(this);
     this.hideListingModal = this.hideListingModal.bind(this);
     this.fetchMemberData = this.fetchMemberData.bind(this);
+    this.postUserRating = this.postUserRating.bind(this);
   }
 
   fetchOwnerData (ownerId, listing) {
@@ -73,6 +75,10 @@ class PastWorkouts extends Component {
     console.log('getting invites...');
   }
 
+  postUserRating (userId, rating) {
+    console.log('Post a rating update for user:', userId, rating);
+  }
+
   render() {
     var { invites, showModal, selectedListing } = this.state;
     var images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
@@ -84,13 +90,13 @@ class PastWorkouts extends Component {
           <Card.Group itemsPerRow={3}>
             {invites.map(listing => (
               <Card key={listing.id}>
-                <Card.Content onClick={() =>this.showListingModal(listing)}>
+                <Card.Content onClick={() => this.showListingModal(listing)}>
                   <Image src={this.props.user.picture || userPic} size='mini' floated='left'/>
                   <Card.Header>{listing.title}</Card.Header>
                   <Card.Meta>{listing.name}</Card.Meta>
                   <Card.Meta>{listing.location}</Card.Meta>
                   <Card.Description>{`${listing.details} on ${new Date(listing.date).toDateString()} for ${listing.duration} hour(s)`}</Card.Description>
-                </Card.Content>
+                </Card.Content>               
               </Card>
             ))}
           </Card.Group>
@@ -113,7 +119,9 @@ class PastWorkouts extends Component {
     );
   }
 
-
 }
+
+//                  <RatingDropdown postingId={listing.id} buddies={this.state.members} postUserRating={this.postUserRating} fetchMemberData={this.fetchMemberData} />
+
 
 export default PastWorkouts;
