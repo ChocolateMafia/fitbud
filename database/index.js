@@ -483,13 +483,13 @@ var createPair = function(requestObj, callback) {
 };
 
 var getUserAcceptPostings = function(userId, callback) {
-  var dateNow = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+  //var dateNow = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
   var query = `SELECT p.*
-    FROM requests r LEFT JOIN postings p ON r.postingId = p.id WHERE r.UserId = ? and r.status = ? and p.date > ?
+    FROM requests r LEFT JOIN postings p ON r.postingId = p.id WHERE r.UserId = ? and r.status = ?
     UNION
     SELECT *
-    FROM postings WHERE UserId = ? and date > ?`;
-  connection.query(query, [userId, 'accept', dateNow, userId, dateNow], (err, result) => {
+    FROM postings WHERE userId = ?`;
+  connection.query(query, [userId, 'accept', userId], (err, result) => {
     if (err) {
       console.error('error getting accepted requests', err);
     } else {
