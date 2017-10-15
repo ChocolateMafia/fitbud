@@ -47,6 +47,10 @@ class Listings extends Component {
   }
 
   fetchFriends () {
+    if (!this.props.user) {
+      console.error("fetchFrieds - user is null")
+      return;
+    }
     fetch('/friends/' + this.props.user.id, {credentials: 'include'})
       .then(response => response.json())
       .then(data => {

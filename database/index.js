@@ -64,10 +64,11 @@ var checkUser = function(username, callback) {
   connection.query(query, [username], function(err, dbUserResult) {
     if (err) {
       console.error('error when finding user', err);
+      callback(err);
     } else {
       console.log('result of finding a user', dbUserResult);
       if (dbUserResult.length === 0) {
-        callback(err, null);
+        callback(new Error("user not found"), null);
       } else {
         callback(null, dbUserResult);
       }
@@ -93,6 +94,7 @@ var getFriendshipStatus = function (userId, friendId, callback) {
   connection.query(query, [userId, friendId, friendId, userId], function(err, results) {
     if (err) {
       console.error('error when finding friendship', err);
+      callback(err);
     } else {
       callback(null, results);
     }
@@ -106,6 +108,7 @@ var getUserFriendships = function (userId, callback) {
     console.log('&&&&&&&&&&&&&&', results);
     if (err) {
       console.error('error when finding user friendships', err);
+      callback(err);
     } else {
       callback(null, results);
     }
@@ -129,7 +132,8 @@ var comparePassword = function(passwordEntered, hash, callback) {
   console.log('inside compare password');
   bcrypt.compare(passwordEntered, hash, function(err, isMatch) {
     if (err) {
-      throw err;
+      return callback(err);
+
     }
     callback(null, isMatch);
   });
@@ -141,6 +145,7 @@ var findById = function(id, callback) {
   connection.query(query, [id], function(err, dbResultArr) {
     if (err) {
       console.error('error when finding id');
+      return callback(err, null);
     } else {
       //console.log('result of finding a id', dbResultArr[0]);
       callback(null, dbResultArr[0]);
@@ -152,13 +157,14 @@ var findByIds = function(ids, callback) {
   console.log('database bulk ids search');
   
   if (!ids.length) { 
-    callback(null, []); 
+    return callback(null, []); 
   }
 
   var query = 'SELECT * FROM users WHERE id IN ( ? )';
   connection.query(query, [ids], function(err, dbResultArr) {
     if (err) {
       console.error('error when finding ids');
+      callback(err);
     } else {
       callback(null, dbResultArr);
     }
