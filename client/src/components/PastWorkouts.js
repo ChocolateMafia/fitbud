@@ -17,8 +17,7 @@ class PastWorkouts extends Component {
     this.fetchOwnerData = this.fetchOwnerData.bind(this);
     this.showListingModal = this.showListingModal.bind(this);
     this.hideListingModal = this.hideListingModal.bind(this);
-    this.fetchMemberData = this.fetchMemberData.bind(this);
-    this.postUserRating = this.postUserRating.bind(this);
+    this.fetchWorkouts = this.fetchWorkouts.bind(this);
   }
 
   fetchOwnerData (ownerId, listing) {
@@ -32,21 +31,9 @@ class PastWorkouts extends Component {
           selectedListing: listing
         });        
       });
-  }  
-
-  fetchMemberData (listingId) {
-    fetch('/postings/members/' + listingId, {credentials: 'include'})
-      .then(response => response.json())
-      .then(members => {
-        console.log('Members Data', members);
-        this.setState({
-          members
-        });        
-      });    
   }
 
   showListingModal (listing) {
-    this.fetchMemberData(listing.id);
     this.fetchOwnerData(listing.userId, listing);
   }
 
@@ -57,8 +44,7 @@ class PastWorkouts extends Component {
     });
   }
 
-
-  componentDidMount() {
+  fetchWorkouts () {
     fetch('/dashboard/accepted', { credentials: 'include' })
       .then(response => response.json()
         .then(
@@ -71,12 +57,11 @@ class PastWorkouts extends Component {
           }
         )
       );
-
-    console.log('getting invites...');
+    console.log('getting invites...');    
   }
 
-  postUserRating (userId, rating) {
-    console.log('Post a rating update for user:', userId, rating);
+  componentDidMount() {
+    this.fetchWorkouts();
   }
 
   render() {
@@ -88,7 +73,7 @@ class PastWorkouts extends Component {
       [<Transition visible={this.state.visible} duration={1000} animation='fade'>
         <Container style={{marginTop: '20px'}}>
           <Card.Group itemsPerRow={3}>
-            {invites.map(listing => (
+            {invites.map((listing) => (
               <Card key={listing.id}>
                 <Card.Content onClick={() => this.showListingModal(listing)}>
                   <Image src={this.props.user.picture || userPic} size='mini' floated='left'/>
@@ -96,7 +81,13 @@ class PastWorkouts extends Component {
                   <Card.Meta>{listing.name}</Card.Meta>
                   <Card.Meta>{listing.location}</Card.Meta>
                   <Card.Description>{`${listing.details} on ${new Date(listing.date).toDateString()} for ${listing.duration} hour(s)`}</Card.Description>
-                </Card.Content>               
+                </Card.Content>
+                <Card.Content extra >
+                  <RatingDropdown
+                    postingId={listing.id} 
+                    user={this.props.user}
+                  />
+                </Card.Content>                
               </Card>
             ))}
           </Card.Group>
@@ -112,16 +103,13 @@ class PastWorkouts extends Component {
             ownerImage={this.props.user.picture || userPic}
             owner={this.state.owner}
             showRequest={false}
-            members={this.state.members}
           />
         )}
       </Container>]
     );
   }
 
+
 }
-
-//                  <RatingDropdown postingId={listing.id} buddies={this.state.members} postUserRating={this.postUserRating} fetchMemberData={this.fetchMemberData} />
-
 
 export default PastWorkouts;
