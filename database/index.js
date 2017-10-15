@@ -7,7 +7,7 @@ var Pusher = require('pusher');
 var connection;
 
 function handleDisconnect() {
-  var connection = mysql.createConnection({
+  connection = mysql.createConnection({
     host: process.env.DBSERVER || 'localhost',
     user: process.env.DBUSER || 'root',
     password: process.env.DBPASSWORD || '',
