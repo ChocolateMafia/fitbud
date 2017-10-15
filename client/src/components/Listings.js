@@ -13,24 +13,24 @@ class Listings extends Component {
       allListings: [],
       showModal: false,
       selectedListing: null,
-      owner: {}
+      owner: {},
+      friends: []
     };
 
     this.updateListings = this.updateListings.bind(this);
     this.hideListingModal = this.hideListingModal.bind(this);
     this.showListingModal = this.showListingModal.bind(this);
     this.fetchOwnerData = this.fetchOwnerData.bind(this);
-    this.toggleVisibility = this.toggleVisibility.bind(this);
+    this.fetchFriends = this.fetchFriends.bind(this);
   }
 
-  toggleVisibility () {
-    this.setState({ barVisible: !this.state.barVisible });
-  } 
+  toggleVisibility = () => this.setState({ barVisible: !this.state.barVisible })
 
   componentDidMount() {
     this.setState({visible: true});
     console.log('mounting');
     this.updateListings();
+    console.log(this.state.listings);
   }  
 
   updateListings () {
@@ -38,11 +38,28 @@ class Listings extends Component {
       .then(response => response.json())
       .then(listings => {
         console.log('listings', listings);
+        this.fetchFriends();
         this.setState({
           listings: listings,
           allListings: listings,
         });
       });
+  }
+
+  fetchFriends () {
+    fetch('/friends/' + this.props.user.id, {credentials: 'include'})
+      .then(response => response.json())
+      .then(data => {
+        console.log('Friends ', data.friends);
+        console.log('Requesters ', data.requesters);
+        var myFriends = [];
+        data.friends.map(friend => {
+          myFriends.push(friend.id);
+        });
+        this.setState({
+          friends: myFriends,
+        });        
+      });    
   }
 
   fetchOwnerData (ownerId, listing) {
@@ -72,7 +89,7 @@ class Listings extends Component {
     });
   }
   handleSort = (sort) => {
-    console.log(sort);
+    //console.log(sort);
     this.setState({
       sort: sort
     });
@@ -116,11 +133,33 @@ class Listings extends Component {
     this.setState({listings: newListings});
     
   }
+
+  handleBudClick = (buddies) => {
+    var listings = this.state.allListings;
+    var newListings = [];
+    if (buddies === 2) {
+      newListings = listings.filter(item => item.modified_buddies <= 2);
+    }
+    if (buddies === 3) {
+      newListings = listings.filter(item => (item.modified_buddies <= 5 && item.modified_buddies >= 3));
+    }
+    if (buddies === 6) {
+      newListings = listings.filter(item => item.modified_buddies >= 6);
+    } 
+    if (buddies === 'friends') {
+      var friends = this.state.friends;
+
+      newListings = listings.filter(item =>  friends.includes(item.ownerId));
+
+    }
+    this.setState({listings: newListings});
+    
+  }
   render() {
     var { listings, showModal, selectedListing } = this.state;
     var images = ['daniel.jpg', 'elliot.jpg', 'matthew.png', 'rachel.png'];
     var randomPic = '/' + images[Math.floor(Math.random() * images.length)];
-
+    console.log(this.props);
     // console.log(this.images);
 
     return (
@@ -135,12 +174,15 @@ class Listings extends Component {
             <Dropdown key='filter' text='Filter by' pointing style={{marginLeft: '20px', marginTop: '20px'}}>          
             <Dropdown.Menu> 
               <Dropdown.Header icon='time' content='Duration' />
-              <Dropdown.Item key='twoHrs' onClick={() => this.handleItemClick(2)}>Less than 2 hrs</Dropdown.Item>
-              <Dropdown.Item key='threeHrs' onClick={() => this.handleItemClick(3)}>3 to 5 hrs</Dropdown.Item>
-              <Dropdown.Item key='sixHrs' onClick={() => this.handleItemClick(6)}>5 hrs+!</Dropdown.Item>
+                <Dropdown.Item key='twoHrs' onClick={() => this.handleItemClick(2)}>Less than 2 hrs</Dropdown.Item>
+                <Dropdown.Item key='threeHrs' onClick={() => this.handleItemClick(3)}>3 to 5 hrs</Dropdown.Item>
+                <Dropdown.Item key='sixHrs' onClick={() => this.handleItemClick(6)}>5 hrs+!</Dropdown.Item>
               <Dropdown.Divider />
-              <Dropdown.Header icon='smile' content='Friends' />
-              
+              <Dropdown.Header icon='smile' content='Friends/Buddies' />
+                <Dropdown.Item key='twobuds' onClick={() => this.handleBudClick(2)}>Less than 2</Dropdown.Item>
+                <Dropdown.Item key='threebuds' onClick={() => this.handleBudClick(3)}>3 to 5</Dropdown.Item>
+                <Dropdown.Item key='sixbuds' onClick={() => this.handleBudClick(6)}>5+ !</Dropdown.Item>
+                <Dropdown.Item key='myFriends' onClick={() => this.handleBudClick('friends')}>Only my Friends</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         <div><Divider /></div>
