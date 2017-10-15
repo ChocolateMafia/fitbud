@@ -436,6 +436,63 @@ var createEvent = function(requestObj, callback) {
     });
 };
 
+var createFriendshipEvent = function(author, friendId, objectId, type, status, callback) {
+  var description = '';
+  var title = '';
+  var recipient;
+  return getAuthorForEvent(author)
+    .then((result) => {
+      if (result.length) {
+        var name = result[0].name;
+      } else {
+        var name = 'Anonymous';
+      }
+      description += name;
+      if (status === 'new') {
+        description += ' sent you friend request';
+      } 
+      if (status === 'accept') {
+        description += ' accepted your friend request';
+      }
+      return new Promise((resolve, reject) => {
+        var query = 'SELECT * from users WHERE id = ?';
+        connection.query(query, friendId, function(error, result) {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        });
+      });
+    })
+    .then((result) => {
+      console.log('result', result);
+      recipient = result[0].id;
+      var insertObj = {recipient, author, objectId, type, description};
+      var query = 'INSERT INTO events SET ?';
+      return new Promise((resolve, reject) => {
+        connection.query(query, insertObj, (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        });
+      });
+    })
+    .then((result) => {
+      console.log('createEvent result', result);
+      pusher.trigger(eventsChannel, 'event', {
+        'message': [recipient]
+      });
+      callback(null, result);
+    })
+    .catch((error) => {
+      console.log('error creating event', error);
+      callback(error, null);
+    });
+};
+
 var getEvents = function(userId, callback) {
   var query = `SELECT * FROM events WHERE recipient=${userId}`;
   connection.query(query, (error, result) => {
@@ -540,6 +597,7 @@ module.exports = {
   getUserRequestPostings,
   createRequest,
   createEvent,
+  createFriendshipEvent,
   updateEventsStatus,
   getEvents,
   getEventsCount,
