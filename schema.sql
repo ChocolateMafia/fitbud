@@ -68,7 +68,7 @@ CREATE TABLE events (
   author INT,
   recipient INT,
   objectId INT,
-  type ENUM('requests', 'chat', 'postings'),
+  type ENUM('requests', 'chat', 'postings', 'friendship'),
   description VARCHAR(255) NOT NULL,
   new BOOLEAN DEFAULT true,
   PRIMARY KEY (id)

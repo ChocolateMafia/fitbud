@@ -38,7 +38,13 @@ router.post('/', (req, res) => {
     if (!friendships.length) {
       // create new frienship request entry
       db.addFriendRequest(req.body.userId, req.body.friendId, (err, result) => {
-        err ? res.status(400).send() : res.json();
+        if (err) {
+          res.status(400).send();
+        } else {
+          db.createFriendshipEvent(req.body.userId, req.body.friendId, result.insertId, 'friendship', 'new', (err, result) => {
+            err ? res.status(400).send() : res.json();
+          });
+        }
       });
     } else {
       // update existing friendship status to pending
@@ -51,7 +57,9 @@ router.post('/', (req, res) => {
 
 router.post('/accept', (req, res) => {
   db.updateFriendshipStatus('accept', req.body.userId, req.body.friendId, (err, result) => {
-    err ? res.status(400).send() : res.json();
+    db.createFriendshipEvent(req.body.friendId, req.body.userId, null, 'friendship', 'accept', (err, result) => {
+      err ? res.status(400).send() : res.json();
+    });
   });
 });
 
